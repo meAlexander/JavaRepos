@@ -1,6 +1,8 @@
 package server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.Connection;
@@ -25,7 +27,7 @@ public class MyThread extends Thread {
 			PrintStream printout = new PrintStream(this.socket.getOutputStream());
 			PreparedStatement ps = null;
 			Scanner scan2 = new Scanner(socket.getInputStream());
-
+			BufferedReader bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			printout.println("Choose option: 1.Log in 2.Registration 3.View products");
 			String option = scan2.nextLine();
 
@@ -35,7 +37,7 @@ public class MyThread extends Thread {
 				printout.println("Choose option: 1.Add product 2.Delete product 3.Update product");
 				option = scan2.nextLine();
 				if (option.equals("Add product")) {
-					addNewProduct(connection, printout, ps, scan2);
+					addNewProduct(connection, printout, ps, bf);
 				} else if (option.equals("Delete product")) {
 					deleteProduct(connection, printout, ps, scan2);
 				} else if (option.equals("Update product")) {
@@ -47,6 +49,7 @@ public class MyThread extends Thread {
 				getAllProducts(connection, printout);
 			}
 			scan2.close();
+			bf.close();
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -77,23 +80,23 @@ public class MyThread extends Thread {
 		}
 	}
 
-	public void addNewProduct(Connection connection, PrintStream printout, PreparedStatement ps, Scanner scan2)
-			throws SQLException {
+	public void addNewProduct(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf)
+			throws SQLException, IOException {
 		printout.println("What product want to add to menu: 1.Pizza 2.Salad 3.Drink");
-		String option = scan2.nextLine();
+		String option = bf.readLine();
 
 		if (option.equals("Pizza")) {
 			printout.println("Enter pizza name: ");
-			String pizzaName = scan2.nextLine();
+			String pizzaName = bf.readLine();
 
 			printout.println("Enter size: ");
-			String size = scan2.nextLine();
+			String size = bf.readLine();
 
 			printout.println("Enter ingredients: ");
-			String ingredients = scan2.nextLine();
+			String ingredients = bf.readLine();
 
 			printout.println("Enter pizza price: ");
-			double price = scan2.nextDouble();
+			double price = Double.parseDouble(bf.readLine());
 
 			ps = connection.prepareStatement(
 					"INSERT INTO pizzas(pizza_name, size, ingredients, price)" + "VALUES(?, ?, ?, ?)");
@@ -104,13 +107,13 @@ public class MyThread extends Thread {
 
 		} else if (option.equals("Salad")) {
 			printout.println("Enter salad name: ");
-			String saladName = scan2.nextLine();
+			String saladName = bf.readLine();
 
 			printout.println("Enter ingredients: ");
-			String ingredients = scan2.nextLine();
+			String ingredients = bf.readLine();
 
 			printout.println("Enter salad price: ");
-			double price = scan2.nextDouble();
+			double price = Double.parseDouble(bf.readLine());
 			
 			ps = connection.prepareStatement("INSERT INTO salads(salad_name, ingredients, price)" + "VALUES(?, ?, ?)");
 			ps.setString(1, saladName);
@@ -118,16 +121,16 @@ public class MyThread extends Thread {
 			ps.setDouble(3, price);
 		} else if (option.equals("Drink")) {
 			printout.println("Enter drink name: ");
-			String drinkName = scan2.nextLine();
+			String drinkName = bf.readLine();
 
 			printout.println("Enter brand: ");
-			String brand = scan2.nextLine();
+			String brand = bf.readLine();
 
 			printout.println("Enter quantity: ");
-			int quantity = scan2.nextInt();
+			int quantity = Integer.parseInt(bf.readLine());
 
 			printout.println("Enter drink price: ");
-			double price = scan2.nextDouble();
+			double price = Double.parseDouble(bf.readLine());
 
 			ps = connection
 					.prepareStatement("INSERT INTO drinks(drink_name, brand, quantity, price)" + "VALUES(?, ?, ?, ?)");

@@ -40,7 +40,7 @@ public class ClientClass {
 					printout.println(scan1.nextLine());
 
 					System.out.println(scan2.nextLine());
-					printout.println(scan1.nextDouble());
+					printout.println(scan1.nextLine());
 				} else if (option.equals("Salad")) {
 					System.out.println(scan2.nextLine());
 					printout.println(scan1.nextLine());
@@ -49,7 +49,7 @@ public class ClientClass {
 					printout.println(scan1.nextLine());
 
 					System.out.println(scan2.nextLine());
-					printout.println(scan1.nextDouble());
+					printout.println(scan1.nextLine());
 				} else if (option.equals("Drink")) {
 					System.out.println(scan2.nextLine());
 					printout.println(scan1.nextLine());
@@ -58,10 +58,10 @@ public class ClientClass {
 					printout.println(scan1.nextLine());
 					
 					System.out.println(scan2.nextLine());
-					printout.println(scan1.nextInt());
+					printout.println(scan1.nextLine());
 					
 					System.out.println(scan2.nextLine());
-					printout.println(scan1.nextDouble());
+					printout.println(scan1.nextLine());
 				}
 			} else if (option.equals("Delete product")) {
 				System.out.println(scan2.nextLine());
