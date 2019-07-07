@@ -20,10 +20,12 @@ public class MyThread extends Thread {
 
 	protected Socket socket;
 	protected String address = "jdbc:mysql://localhost:3306/pizza_order";
-	protected static final String PASSWORD_PATTERN = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^*&+=]).{8,}";
-	protected static final String EMAIL_PATTERN = "^[a-z]+[A-Za-z0-9_.-]{4,}+@[a-z]{2,6}+\\.[a-z]{2,5}";
-	Pattern pattern1;
-	Matcher matcher1;
+	protected PreparedStatement ps = null;
+	protected ResultSet rs = null;
+	private static final String PASSWORD_PATTERN = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^*&+=]).{8,}";
+	private static final String EMAIL_PATTERN = "^[a-z]+[A-Za-z0-9_.-]{4,}+@[a-z]{2,6}+\\.[a-z]{2,5}";
+	protected Pattern pattern1;
+	protected Matcher matcher1;
 
 	public MyThread(Socket socket) {
 		this.socket = socket;
@@ -34,8 +36,6 @@ public class MyThread extends Thread {
 			Connection connection = DriverManager.getConnection(address, "root", "123456");
 			PrintStream printout = new PrintStream(this.socket.getOutputStream());
 			BufferedReader buffreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			PreparedStatement ps = null;
-			ResultSet rs = null;
 
 			menu(connection, printout, ps, rs, buffreader);
 
@@ -66,42 +66,7 @@ public class MyThread extends Thread {
 		}
 		printout.println("Successfull operation");
 	}
-
-	public void optionRegistration(Connection connection, PrintStream printout, PreparedStatement ps, ResultSet rs,
-			BufferedReader buffreader) throws SQLException, IOException, NotValidDataException, UserExistsException {
-
-		String option;
-		String username;
-		String password;
-		String email;
-
-		printout.println("Enter first username and then password and email: ");
-		username = buffreader.readLine();
-		password = buffreader.readLine();
-		email = buffreader.readLine();
-
-		printout.println("Registration option: 1.Admin 2.User");
-		option = buffreader.readLine();
-		
-		if (option.equals("Admin")) {
-			if (!(checkAdminName(username, connection, rs)) && !(checkAdminPass(password, connection, rs))
-					&& validateEmailAdmin(email, connection, rs)) {
-				printout.println("Successfull registration");
-			} else {
-				throw new UserExistsException();
-			}
-		} else if (option.equals("User")) {
-			if (!(checkUserName(username, connection, rs)) && !(checkUserPass(password, connection, rs))
-					&& validateEmailUser(email, connection, rs)) {
-				printout.println("Successfull registration");
-			} else {
-				throw new UserExistsException();
-			}
-		}
-		
-		menu(connection, printout, ps, rs, buffreader);
-	}
-
+	
 	public void optionLogIn(Connection connection, PrintStream printout, PreparedStatement ps, ResultSet rs,
 			BufferedReader buffreader) throws SQLException, IOException, NotValidDataException, UserExistsException {
 
@@ -145,6 +110,69 @@ public class MyThread extends Thread {
 			}
 		}
 	}
+	
+	public void optionRegistration(Connection connection, PrintStream printout, PreparedStatement ps, ResultSet rs,
+			BufferedReader buffreader) throws SQLException, IOException, NotValidDataException, UserExistsException {
+
+		String option;
+		String username;
+		String password;
+		String phone;
+		String email;
+
+		printout.println("Enter first username then password, phone and email: ");
+		username = buffreader.readLine();
+		password = buffreader.readLine();
+		phone = buffreader.readLine();
+		email = buffreader.readLine();
+
+		printout.println("Registration option: 1.Admin 2.User");
+		option = buffreader.readLine();
+		
+		if (option.equals("Admin")) {
+			if (!(checkAdminName(username, connection, rs)) && !(checkAdminPass(password, connection, rs))
+					&& validateEmailAdmin(email, connection, rs)) {
+				
+				registerAdmin(connection, ps, username, password, phone, email);
+			} else {
+				throw new UserExistsException();
+			}
+		} else if (option.equals("User")) {
+			if (!(checkUserName(username, connection, rs)) && !(checkUserPass(password, connection, rs))
+					&& validateEmailUser(email, connection, rs)) {
+				
+				registerUser(connection, ps, username, password, phone, email);
+			} else {
+				throw new UserExistsException();
+			}
+		}
+		
+		printout.println("Successfull registration");
+	}
+
+	public void registerUser(Connection connection, PreparedStatement ps, String username, String password, String phone, String email) throws SQLException {
+		
+		ps = connection
+				.prepareStatement("INSERT INTO users(username, password, phone, email)" + "VALUES(?, ?, ?, ?)");
+		ps.setString(1, username);
+		ps.setString(2, password);
+		ps.setString(3, phone);
+		ps.setString(4, email);
+		
+		ps.execute();
+	}
+	
+	public void registerAdmin(Connection connection,PreparedStatement ps, String adminName, String password, String phone, String email) throws SQLException {
+		
+		ps = connection
+				.prepareStatement("INSERT INTO admins(adminName, password, phone, email)" + "VALUES(?, ?, ?, ?)");
+		ps.setString(1, adminName);
+		ps.setString(2, password);
+		ps.setString(3, phone);
+		ps.setString(4, email);
+		
+		ps.execute();
+	}
 
 	public boolean checkUserName(String user, Connection connection, ResultSet rs) throws SQLException {
 
@@ -155,13 +183,36 @@ public class MyThread extends Thread {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
 	public boolean checkUserPass(String pass, Connection connection, ResultSet rs) throws SQLException {
 
 		rs = connection.prepareStatement("SELECT password" + " FROM users").executeQuery();
+
+		while (rs.next()) {
+			if (pass.equals(rs.getString("password"))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean checkAdminName(String admin, Connection connection, ResultSet rs) throws SQLException {
+
+		rs = connection.prepareStatement("SELECT adminName" + " FROM admins").executeQuery();
+
+		while (rs.next()) {
+			if (admin.equals(rs.getString("adminName"))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean checkAdminPass(String pass, Connection connection, ResultSet rs) throws SQLException {
+
+		rs = connection.prepareStatement("SELECT password" + " FROM admins").executeQuery();
 
 		while (rs.next()) {
 			if (pass.equals(rs.getString("password"))) {
@@ -182,35 +233,9 @@ public class MyThread extends Thread {
 				return true;
 			}
 		}
-
 		return false;
 	}
-
-	public boolean checkAdminName(String admin, Connection connection, ResultSet rs) throws SQLException {
-
-		rs = connection.prepareStatement("SELECT adminName" + " FROM admins").executeQuery();
-
-		while (rs.next()) {
-			if (admin.equals(rs.getString("adminName"))) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public boolean checkAdminPass(String pass, Connection connection, ResultSet rs) throws SQLException {
-
-		rs = connection.prepareStatement("SELECT password" + " FROM admins").executeQuery();
-
-		while (rs.next()) {
-			if (pass.equals(rs.getString("password"))) {
-				return true;
-			}
-		}
-		return false;
-	}
-
+	
 	public boolean validateEmailAdmin(String email, Connection connection, ResultSet rs) throws SQLException {
 
 		pattern1 = Pattern.compile(EMAIL_PATTERN);
@@ -222,7 +247,6 @@ public class MyThread extends Thread {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -264,62 +288,76 @@ public class MyThread extends Thread {
 		String option = bf.readLine();
 
 		if (option.equals("Pizza")) {
-			printout.println("Enter pizza name: ");
-			String pizzaName = bf.readLine();
-
-			printout.println("Enter size: ");
-			String size = bf.readLine();
-
-			printout.println("Enter ingredients: ");
-			String ingredients = bf.readLine();
-
-			printout.println("Enter pizza price: ");
-			double price = Double.parseDouble(bf.readLine());
-
-			ps = connection.prepareStatement(
-					"INSERT INTO pizzas(pizza_name, size, ingredients, price)" + "VALUES(?, ?, ?, ?)");
-			ps.setString(1, pizzaName);
-			ps.setString(2, size);
-			ps.setString(3, ingredients);
-			ps.setDouble(4, price);
-
+			addPizza(connection, printout, ps, bf);
 		} else if (option.equals("Salad")) {
-			printout.println("Enter salad name: ");
-			String saladName = bf.readLine();
-
-			printout.println("Enter ingredients: ");
-			String ingredients = bf.readLine();
-
-			printout.println("Enter salad price: ");
-			double price = Double.parseDouble(bf.readLine());
-
-			ps = connection.prepareStatement("INSERT INTO salads(salad_name, ingredients, price)" + "VALUES(?, ?, ?)");
-			ps.setString(1, saladName);
-			ps.setString(2, ingredients);
-			ps.setDouble(3, price);
+			addSalad(connection, printout, ps, bf);
 		} else if (option.equals("Drink")) {
-			printout.println("Enter drink type: ");
-			String drinkName = bf.readLine();
-
-			printout.println("Enter brand: ");
-			String brand = bf.readLine();
-
-			printout.println("Enter quantity: ");
-			int quantity = Integer.parseInt(bf.readLine());
-
-			printout.println("Enter drink price: ");
-			double price = Double.parseDouble(bf.readLine());
-
-			ps = connection
-					.prepareStatement("INSERT INTO drinks(drink_type, brand, quantity, price)" + "VALUES(?, ?, ?, ?)");
-			ps.setString(1, drinkName);
-			ps.setString(2, brand);
-			ps.setInt(3, quantity);
-			ps.setDouble(4, price);
+			addDrink(connection, printout, ps, bf);
 		} else {
 			printout.println("No such product");
 		}
 		ps.execute();
+	}
+	
+	public void addPizza(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf) throws SQLException, IOException {
+		
+		printout.println("Enter pizza name: ");
+		String pizzaName = bf.readLine();
+
+		printout.println("Enter size: ");
+		String size = bf.readLine();
+
+		printout.println("Enter ingredients: ");
+		String ingredients = bf.readLine();
+
+		printout.println("Enter pizza price: ");
+		double price = Double.parseDouble(bf.readLine());
+
+		ps = connection.prepareStatement(
+				"INSERT INTO pizzas(pizza_name, size, ingredients, price)" + "VALUES(?, ?, ?, ?)");
+		ps.setString(1, pizzaName);
+		ps.setString(2, size);
+		ps.setString(3, ingredients);
+		ps.setDouble(4, price);
+	}
+	
+	public void addSalad(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf) throws SQLException, IOException {
+		
+		printout.println("Enter salad name: ");
+		String saladName = bf.readLine();
+
+		printout.println("Enter ingredients: ");
+		String ingredients = bf.readLine();
+
+		printout.println("Enter salad price: ");
+		double price = Double.parseDouble(bf.readLine());
+
+		ps = connection.prepareStatement("INSERT INTO salads(salad_name, ingredients, price)" + "VALUES(?, ?, ?)");
+		ps.setString(1, saladName);
+		ps.setString(2, ingredients);
+		ps.setDouble(3, price);
+	}
+	
+	public void addDrink(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf) throws SQLException, NumberFormatException, IOException {
+		
+		printout.println("Enter drink type: ");
+		String drinkName = bf.readLine();
+
+		printout.println("Enter brand: ");
+		String brand = bf.readLine();
+
+		printout.println("Enter quantity: ");
+		int quantity = Integer.parseInt(bf.readLine());
+
+		printout.println("Enter drink price: ");
+		double price = Double.parseDouble(bf.readLine());
+
+		ps = connection
+				.prepareStatement("INSERT INTO drinks(drink_type, brand, quantity, price)" + "VALUES(?, ?, ?, ?)");
+		ps.setString(1, drinkName);
+		ps.setString(2, brand);
+		ps.setInt(3, quantity);
+		ps.setDouble(4, price);
 	}
 
 	public void deleteProduct(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf)
@@ -328,28 +366,41 @@ public class MyThread extends Thread {
 		String option = bf.readLine();
 
 		if (option.equals("Pizza")) {
-			printout.println("Enter pizza name you want to delete: ");
-			String pizzaName = bf.readLine();
-
-			ps = connection.prepareStatement("DELETE FROM pizzas WHERE pizza_name = ?");
-			ps.setString(1, pizzaName);
-
+			deletePizza(connection, printout, ps, bf);
 		} else if (option.equals("Salad")) {
-			printout.println("Enter salad name you want to delete: ");
-			String saladName = bf.readLine();
-
-			ps = connection.prepareStatement("DELETE FROM salads WHERE salad_name = ?");
-			ps.setString(1, saladName);
-
+			deleteSalad(connection, printout, ps, bf);
 		} else if (option.equals("Drink")) {
-			printout.println("Enter drink type you want to delete: ");
-			String drinkName = bf.readLine();
-
-			ps = connection.prepareStatement("DELETE FROM drinks WHERE drink_type = ?");
-			ps.setString(1, drinkName);
+			deleteDrink(connection, printout, ps, bf);
 		} else {
 			printout.println("No such product");
 		}
 		ps.execute();
+	}
+	
+	public void deletePizza(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf) throws SQLException, IOException {
+		
+		printout.println("Enter pizza name you want to delete: ");
+		String pizzaName = bf.readLine();
+
+		ps = connection.prepareStatement("DELETE FROM pizzas WHERE pizza_name = ?");
+		ps.setString(1, pizzaName);	
+	}
+	
+	public void deleteSalad(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf) throws SQLException, IOException {
+		
+		printout.println("Enter salad name you want to delete: ");
+		String saladName = bf.readLine();
+
+		ps = connection.prepareStatement("DELETE FROM salads WHERE salad_name = ?");
+		ps.setString(1, saladName);
+	}
+	
+	public void deleteDrink(Connection connection, PrintStream printout, PreparedStatement ps, BufferedReader bf) throws SQLException, IOException {
+		
+		printout.println("Enter drink type you want to delete: ");
+		String drinkName = bf.readLine();
+
+		ps = connection.prepareStatement("DELETE FROM drinks WHERE drink_type = ?");
+		ps.setString(1, drinkName);
 	}
 }

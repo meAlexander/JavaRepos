@@ -108,6 +108,7 @@ public class ClientClass {
 			printout.println(scan1.nextLine());
 			printout.println(scan1.nextLine());
 			printout.println(scan1.nextLine());
+			printout.println(scan1.nextLine());
 
 			System.out.println(scan2.nextLine());
 			printout.println(scan1.nextLine());
