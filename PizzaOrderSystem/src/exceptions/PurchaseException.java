@@ -1,10 +1,11 @@
 package exceptions;
+
 @SuppressWarnings("serial")
-public class NotValidDataException extends Exception{
+public class PurchaseException extends Exception {
 	
 	@Override
 	public String getMessage() {
 		
-		return "Invalid data!";
+		return "Unsuccessful purchase! :(";
 	}
 }

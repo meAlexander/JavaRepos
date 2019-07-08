@@ -1,12 +1,11 @@
 package exceptions;
 
 @SuppressWarnings("serial")
-public class UserExistsException extends Exception{
+public class AddNewProductException extends Exception {
 	
 	@Override
 	public String getMessage() {
 		
-		return "User exists!";
+		return "Failed to add the product! :(";
 	}
-	
 }
