@@ -6,15 +6,16 @@ import java.net.Socket;
 
 public class ServerClass {
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
-		@SuppressWarnings("resource")
+
 		ServerSocket server = new ServerSocket(1211);
 		while (true) {
 
 			Socket socket = server.accept();
-
-			MyThread thread = new MyThread(socket);
-
+			
+			CommandFlowThread thread = new CommandFlowThread(socket);
+			thread.setDaemon(true);
 			thread.start();
 		}
 	}
