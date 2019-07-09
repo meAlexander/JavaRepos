@@ -9,8 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import petko.Command;
-import petko.MainMenu;
+import commands.Command;
+import commands.MainMenu;
 
 public class CommandFlowThread extends Thread{
 	private Socket socket;

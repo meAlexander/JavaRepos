@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import exceptions.AddUserExceptions;
-import exceptions.AddNewProductException;
+import exceptions.AddProductException;
 import exceptions.BuyProductException;
 import exceptions.DeleteProductException;
 import exceptions.RegistrationException;
@@ -58,7 +58,7 @@ public class MyThread extends Thread {
 			System.out.println(bpe.getMessage());
 		} catch (PurchaseException p) {
 			System.out.println(p.getMessage());
-		} catch (AddNewProductException anpe) {
+		} catch (AddProductException anpe) {
 			System.out.println(anpe.getMessage());
 		} catch (DeleteProductException dpe) {
 			System.out.println(dpe.getMessage());
@@ -69,7 +69,7 @@ public class MyThread extends Thread {
 
 	public void menu(Connection connection, PrintStream printout, BufferedReader buffreader) throws IOException,
 			SQLException, RegistrationException, LoginException, BuyProductException, PurchaseException,
-			AddNewProductException, DeleteProductException, AddUserExceptions {
+			AddProductException, DeleteProductException, AddUserExceptions {
 		printout.println("Choose option: 1.Log in 2.Registration 3.View products");
 		String option = buffreader.readLine();
 
@@ -84,7 +84,7 @@ public class MyThread extends Thread {
 	}
 
 	public void optionLogIn(Connection connection, PrintStream printout, BufferedReader buffreader)
-			throws SQLException, IOException, LoginException, BuyProductException, PurchaseException, AddNewProductException, DeleteProductException {
+			throws SQLException, IOException, LoginException, BuyProductException, PurchaseException, AddProductException, DeleteProductException {
 
 		String option, user, pass;
 
@@ -303,7 +303,7 @@ public class MyThread extends Thread {
 	}
 
 	public void addNewProduct(Connection connection, PrintStream printout, BufferedReader bf)
-			throws SQLException, IOException, BuyProductException, AddNewProductException {
+			throws SQLException, IOException, BuyProductException, AddProductException {
 		printout.println("What product want to add to menu: 1.Pizza 2.Salad 3.Drink");
 		String option = bf.readLine();
 
@@ -318,7 +318,7 @@ public class MyThread extends Thread {
 		}
 		
 		if(!ps.execute()) {
-			throw new AddNewProductException();
+			throw new AddProductException();
 		};
 	}
 
