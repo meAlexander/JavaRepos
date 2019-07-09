@@ -10,7 +10,6 @@ public class Client {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws UnknownHostException, IOException {
-
 		Socket socket = new Socket("localhost", 1211);
 		
 		Scanner consoleScanner = new Scanner(System.in);

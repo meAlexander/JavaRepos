@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewProductsCommand implements Command {
-
-	private PrintStream printOut;
 	private Connection connection;
+	private PrintStream printOut;
 
-	public ViewProductsCommand(PrintStream printOut, Connection connection) {
-		this.printOut = printOut;
+	public ViewProductsCommand(Connection connection, PrintStream printOut) {
 		this.connection = connection;
+		this.printOut = printOut;
 	}
 
 	@Override
@@ -46,7 +45,6 @@ public class ViewProductsCommand implements Command {
 					resultSet.getDouble("price"));
 			pizzasList.add(pizza);
 		}
-
 		return pizzasList;
 	}
 

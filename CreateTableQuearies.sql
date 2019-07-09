@@ -55,5 +55,6 @@ ON DELETE SET NULL ON UPDATE CASCADE,
 user_id INT(11),
 CONSTRAINT FOREIGN KEY(user_id) REFERENCES users(id)
 ON DELETE SET NULL ON UPDATE CASCADE,
-orderStatus ENUM('Waiting', 'Cooking', 'Delivery') DEFAULT 'Waiting'
+orderStatus ENUM('Waiting', 'Cooking', 'Delivery') DEFAULT 'Waiting',
+dateOrder DATETIME DEFAULT NOW()
 );

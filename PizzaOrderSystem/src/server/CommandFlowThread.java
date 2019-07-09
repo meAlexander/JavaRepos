@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import petko.Command;
-import petko.MainMenuCommand;
+import petko.MainMenu;
 
 public class CommandFlowThread extends Thread{
 	private Socket socket;
@@ -28,8 +28,7 @@ public class CommandFlowThread extends Thread{
 			Connection connection = DriverManager.getConnection(address, "root", "123456");
 			PrintStream printOut = new PrintStream(this.socket.getOutputStream());
 			BufferedReader buffReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			command = new MainMenuCommand(printOut, buffReader, connection);
-			
+			command = new MainMenu(connection, printOut, buffReader);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

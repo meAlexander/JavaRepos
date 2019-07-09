@@ -1,7 +1,7 @@
 package exceptions;
 
 @SuppressWarnings("serial")
-public class AddNewUserExceptions extends Exception {
+public class AddUserExceptions extends Exception {
 	
 	@Override
 	public String getMessage() {

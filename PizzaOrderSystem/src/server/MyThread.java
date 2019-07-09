@@ -13,13 +13,13 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import exceptions.AddNewUserExceptions;
+import exceptions.AddUserExceptions;
 import exceptions.AddNewProductException;
 import exceptions.BuyProductException;
 import exceptions.DeleteProductException;
 import exceptions.RegistrationException;
 import exceptions.PurchaseException;
-import exceptions.WrongDataException;
+import exceptions.LoginException;
 
 public class MyThread extends Thread {
 
@@ -50,7 +50,7 @@ public class MyThread extends Thread {
 			sql.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} catch (WrongDataException wde) {
+		} catch (LoginException wde) {
 			System.out.println(wde.getMessage());
 		} catch (RegistrationException re) {
 			System.out.println(re.getMessage());
@@ -62,14 +62,14 @@ public class MyThread extends Thread {
 			System.out.println(anpe.getMessage());
 		} catch (DeleteProductException dpe) {
 			System.out.println(dpe.getMessage());
-		} catch (AddNewUserExceptions anue) {
+		} catch (AddUserExceptions anue) {
 			System.out.println(anue.getMessage());
 		}
 	}
 
 	public void menu(Connection connection, PrintStream printout, BufferedReader buffreader) throws IOException,
-			SQLException, RegistrationException, WrongDataException, BuyProductException, PurchaseException,
-			AddNewProductException, DeleteProductException, AddNewUserExceptions {
+			SQLException, RegistrationException, LoginException, BuyProductException, PurchaseException,
+			AddNewProductException, DeleteProductException, AddUserExceptions {
 		printout.println("Choose option: 1.Log in 2.Registration 3.View products");
 		String option = buffreader.readLine();
 
@@ -84,7 +84,7 @@ public class MyThread extends Thread {
 	}
 
 	public void optionLogIn(Connection connection, PrintStream printout, BufferedReader buffreader)
-			throws SQLException, IOException, WrongDataException, BuyProductException, PurchaseException, AddNewProductException, DeleteProductException {
+			throws SQLException, IOException, LoginException, BuyProductException, PurchaseException, AddNewProductException, DeleteProductException {
 
 		String option, user, pass;
 
@@ -108,7 +108,7 @@ public class MyThread extends Thread {
 
 				}
 			} else {
-				throw new WrongDataException();
+				throw new LoginException();
 			}
 		} else if (option.equals("User")) {
 			if (checkUserInfo(connection, pass, user)) {
@@ -121,7 +121,7 @@ public class MyThread extends Thread {
 					buyProduct(connection, printout, buffreader, user);
 				}
 			} else {
-				throw new WrongDataException();
+				throw new LoginException();
 			}
 		}
 
@@ -129,7 +129,7 @@ public class MyThread extends Thread {
 	}
 
 	public void optionRegistration(Connection connection, PrintStream printout, BufferedReader buffreader)
-			throws SQLException, IOException, RegistrationException, AddNewUserExceptions {
+			throws SQLException, IOException, RegistrationException, AddUserExceptions {
 
 		String option, user, pass, phone, email;
 
@@ -158,7 +158,7 @@ public class MyThread extends Thread {
 			}
 		}
 		if(!ps.execute()) {
-			throw new AddNewUserExceptions();
+			throw new AddUserExceptions();
 		}
 		printout.println("Successfull registration!");
 	}

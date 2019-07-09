@@ -1,7 +1,7 @@
 package exceptions;
 
 @SuppressWarnings("serial")
-public class WrongDataException extends Exception{
+public class LoginException extends Exception{
 	
 	@Override
 	public String getMessage() {
