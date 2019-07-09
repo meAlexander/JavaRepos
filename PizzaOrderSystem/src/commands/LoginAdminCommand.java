@@ -62,7 +62,7 @@ public class LoginAdminCommand implements Command {
 	public boolean checkAdminInfo(String admin, String pass) throws SQLException {
 
 		ResultSet resultSet = connection.prepareStatement(String.format(
-				"SELECT adminName, password" + " FROM admins WHERE adminName = '%s' AND password = '%s'", admin, pass))
+				"SELECT adminName, password FROM admins WHERE adminName = '%s' AND password = '%s'", admin, pass))
 				.executeQuery();
 
 		if (resultSet.next()) {

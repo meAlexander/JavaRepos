@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import exceptions.AddProductException;
 import exceptions.BuyProductException;
 
 public class BuyProductSaladCommand implements Command {
@@ -26,7 +25,7 @@ public class BuyProductSaladCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter salad");
+		printOut.println("Please enter salad name you want to buy");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -42,24 +41,22 @@ public class BuyProductSaladCommand implements Command {
 			e.printStackTrace();
 		} catch (BuyProductException e) {
 			System.out.println(e.getMessage());
-		} catch (AddProductException e) {
-			System.out.println(e.getMessage());
-		}
+		} 
 		return null;
 	}
 
 	public int getUserId() throws SQLException {
 		ResultSet rs = connection
-				.prepareStatement(String.format("SELECT id" + " FROM users WHERE username = '%s'", user))
+				.prepareStatement(String.format("SELECT id FROM users WHERE username = '%s'", user))
 				.executeQuery();
 
 		rs.next();
 		return rs.getInt("id");
 	}
 
-	public void buySalad(String salad) throws SQLException, IOException, BuyProductException, AddProductException {
+	public void buySalad(String salad) throws SQLException, IOException, BuyProductException {
 		ResultSet rs = connection
-				.prepareStatement(String.format("SELECT id" + " FROM salads WHERE salad_name = '%s'", salad))
+				.prepareStatement(String.format("SELECT id FROM salads WHERE salad_name = '%s'", salad))
 				.executeQuery();
 
 		if (!rs.next()) {
@@ -68,14 +65,14 @@ public class BuyProductSaladCommand implements Command {
 		acceptSaladOrder(rs.getInt("id"), getUserId());
 	}
 
-	public void acceptSaladOrder(int salad_id, int userId) throws SQLException, AddProductException {
+	public void acceptSaladOrder(int salad_id, int userId) throws SQLException, BuyProductException {
 		PreparedStatement ps = connection.prepareStatement(
-				"INSERT INTO orders(pizza_id, salad_id, drink_id, user_id)" + " VALUES(NULL, ?, NULL, ?)");
+				"INSERT INTO orders(pizza_id, salad_id, drink_id, user_id) VALUES(NULL, ?, NULL, ?)");
 		ps.setInt(1, salad_id);
 		ps.setInt(2, userId);
 
 		if (ps.execute()) {
-			throw new AddProductException();
+			throw new BuyProductException();
 		}
 	}
 }

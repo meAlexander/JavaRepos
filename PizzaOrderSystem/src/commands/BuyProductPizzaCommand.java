@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import exceptions.AddProductException;
 import exceptions.BuyProductException;
 
 public class BuyProductPizzaCommand implements Command {
@@ -26,7 +25,7 @@ public class BuyProductPizzaCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter pizza and size");
+		printOut.println("Please enter pizza and size you want to buy");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -44,8 +43,6 @@ public class BuyProductPizzaCommand implements Command {
 			e.printStackTrace();
 		} catch (BuyProductException e) {
 			System.out.println(e.getMessage());
-		} catch (AddProductException e) {
-			System.out.println(e.getMessage());
 		}
 		return null;
 	}
@@ -59,7 +56,7 @@ public class BuyProductPizzaCommand implements Command {
 	}
 
 	public void buyPizza(String pizza, String size)
-			throws SQLException, IOException, BuyProductException, AddProductException {
+			throws SQLException, IOException, BuyProductException {
 		ResultSet resultSet = connection
 				.prepareStatement(
 						String.format("SELECT id FROM pizzas WHERE pizza_name = '%s' AND size = '%s'", pizza, size))
@@ -71,14 +68,14 @@ public class BuyProductPizzaCommand implements Command {
 		acceptPizzaOrder(resultSet.getInt("id"), getUserId());
 	}
 
-	public void acceptPizzaOrder(int pizza_id, int userId) throws SQLException, AddProductException {
+	public void acceptPizzaOrder(int pizza_id, int userId) throws SQLException, BuyProductException {
 		PreparedStatement ps = connection.prepareStatement(
 				"INSERT INTO orders(pizza_id, salad_id, drink_id, user_id, dateOrder) VALUES(?, NULL, NULL, ?, NOW())");
 		ps.setInt(1, pizza_id);
 		ps.setInt(2, userId);
 
 		if (ps.execute()) {
-			throw new AddProductException();
+			throw new BuyProductException();
 		}
 	}
 }

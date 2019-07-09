@@ -22,7 +22,7 @@ public class AddProductPizzaCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter pizza and size");
+		printOut.println("Please enter pizza name, size, ingredients and price you want to add");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -51,7 +51,7 @@ public class AddProductPizzaCommand implements Command {
 	public void addPizza(String pizza, String size, String ingredients, double price) throws SQLException, IOException, AddProductException {
 
 		PreparedStatement ps = connection
-				.prepareStatement("INSERT INTO pizzas(pizza_name, size, ingredients, price)" + "VALUES(?, ?, ?, ?)");
+				.prepareStatement("INSERT INTO pizzas(pizza_name, size, ingredients, price) VALUES(?, ?, ?, ?)");
 		ps.setString(1, pizza);
 		ps.setString(2, size);
 		ps.setString(3, ingredients);

@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 
-public class DeleteProductsMenuCommand implements Command {
+public class DeleteProductMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	
-	public DeleteProductsMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader) {
+	public DeleteProductMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
@@ -18,7 +18,7 @@ public class DeleteProductsMenuCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Delete product menu: 1.Pizzas 2.Salads 3.Drinks 4.Main menu");
+		printOut.println("Delete product menu: 1.Pizza 2.Salad 3.Drink 4.Main menu");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -29,7 +29,7 @@ public class DeleteProductsMenuCommand implements Command {
 			e.printStackTrace();
 		}catch (UnsupportedOperationException e) {
 			printOut.flush();
-			return new DeleteProductsMenuCommand(connection, printOut, buffReader);
+			return new DeleteProductMenuCommand(connection, printOut, buffReader);
 		}
 		return null;
 	}
@@ -37,11 +37,11 @@ public class DeleteProductsMenuCommand implements Command {
 	private Command getNextCommand(String deleteProductAnswer) {
 		System.out.println("Returning: " + deleteProductAnswer);
 		switch (deleteProductAnswer) {
-		case "Pizzas":
+		case "Pizza":
 			return new DeleteProductPizzaCommand(connection, printOut, buffReader);
-		case "Salads":
+		case "Salad":
 			return new DeleteProductSaladCommand(connection, printOut, buffReader);
-		case "Drinks":
+		case "Drink":
 			return new DeleteProductDrinkCommand(connection, printOut, buffReader);
 		case "Main menu":
 			return new MainMenu(connection, printOut, buffReader);

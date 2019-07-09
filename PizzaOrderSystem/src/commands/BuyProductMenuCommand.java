@@ -20,7 +20,7 @@ public class BuyProductMenuCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Buy product menu: 1.Pizzas 2.Salads 3.Drinks 4.Main menu");
+		printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.Main menu");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -39,11 +39,11 @@ public class BuyProductMenuCommand implements Command {
 	private Command getNextCommand(String buyProductAnswer) {
 		System.out.println("Returning: " + buyProductAnswer);
 		switch (buyProductAnswer) {
-		case "Pizzas":
+		case "Pizza":
 			return new BuyProductPizzaCommand(connection, printOut, buffReader, user);
-		case "Salads":
+		case "Salad":
 			return new BuyProductSaladCommand(connection, printOut, buffReader, user);
-		case "Drinks":
+		case "Drink":
 			return new BuyProductDrinkCommand(connection, printOut, buffReader, user);
 		case "Main menu":
 			return new MainMenu(connection, printOut, buffReader);

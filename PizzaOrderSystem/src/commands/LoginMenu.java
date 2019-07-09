@@ -44,7 +44,7 @@ public class LoginMenu implements Command {
 		case "Main menu":
 			return new MainMenu(connection, printOut, buffReader);
 		default:
-			throw new UnsupportedOperationException("Wrong choice");
+			throw new UnsupportedOperationException();
 		}
 	}
 }

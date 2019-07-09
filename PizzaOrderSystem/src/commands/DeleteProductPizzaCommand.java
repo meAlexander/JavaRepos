@@ -22,7 +22,7 @@ public class DeleteProductPizzaCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter pizza and size you want to delete");
+		printOut.println("Please enter pizza name and size you want to delete");
 		printOut.println("Your input please: ");
 		printOut.flush();
 

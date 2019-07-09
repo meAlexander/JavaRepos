@@ -29,7 +29,7 @@ public class RegistrationAdminCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter adminName, password, phone, mail");
+		printOut.println("Please enter adminName, password, phone and mail");
 		printOut.println("Your input please: ");
 		printOut.flush();
 		

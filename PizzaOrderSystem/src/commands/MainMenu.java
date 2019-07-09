@@ -18,7 +18,7 @@ public class MainMenu implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Main menu: 1.Log in 2.Registration 3.View products");
+		printOut.println("Main menu: 1.Login 2.Registration 3.View products");
 		printOut.println("Your input please: ");
 		printOut.flush();
 		
@@ -37,14 +37,14 @@ public class MainMenu implements Command {
 	private Command getNextCommand(String userMenuAnswer) {
 		System.out.println("Returning: " + userMenuAnswer);
 		switch (userMenuAnswer) {
-		case "Log in":
+		case "Login":
 			return new LoginMenu(connection, printOut, buffReader);
 		case "Registration":
 			return new RegistrationMenu(connection, printOut, buffReader);
 		case "View products":
 			return new ViewProductsCommand(connection, printOut);
 		default:
-			throw new UnsupportedOperationException("Wrong choice");
+			throw new UnsupportedOperationException();
 		}
 	}
 }

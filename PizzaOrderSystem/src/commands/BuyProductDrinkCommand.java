@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import exceptions.AddProductException;
 import exceptions.BuyProductException;
 
 public class BuyProductDrinkCommand implements Command {
@@ -26,7 +25,7 @@ public class BuyProductDrinkCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter drinkType and brand");
+		printOut.println("Please enter drinkType and brand you want to buy");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -44,15 +43,13 @@ public class BuyProductDrinkCommand implements Command {
 			e.printStackTrace();
 		} catch (BuyProductException e) {
 			System.out.println(e.getMessage());
-		} catch (AddProductException e) {
-			System.out.println(e.getMessage());
 		}
 		return null;
 	}
 
 	public int getUserId(String username) throws SQLException {
 		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id" + " FROM users WHERE username = '%s'", username))
+				.prepareStatement(String.format("SELECT id FROM users WHERE username = '%s'", username))
 				.executeQuery();
 
 		resultSet.next();
@@ -60,9 +57,9 @@ public class BuyProductDrinkCommand implements Command {
 	}
 
 	public void buyDrink(String drinkType, String brand, String user)
-			throws SQLException, IOException, BuyProductException, AddProductException {
+			throws SQLException, IOException, BuyProductException {
 		ResultSet resultSet = connection.prepareStatement(
-				String.format("SELECT id" + " FROM drinks WHERE drink_type = '%s' AND brand = '%s'", drinkType, brand))
+				String.format("SELECT id FROM drinks WHERE drink_type = '%s' AND brand = '%s'", drinkType, brand))
 				.executeQuery();
 
 		if (!resultSet.next()) {
@@ -71,14 +68,14 @@ public class BuyProductDrinkCommand implements Command {
 		acceptDrinkOrder(resultSet.getInt("id"), getUserId(user));
 	}
 
-	public void acceptDrinkOrder(int drink_id, int userId) throws SQLException, AddProductException {
+	public void acceptDrinkOrder(int drink_id, int userId) throws SQLException, BuyProductException {
 		PreparedStatement ps = connection.prepareStatement(
-				"INSERT INTO orders(pizza_id, salad_id, drink_id, user_id)" + " VALUES(NULL, NULL, ?, ?)");
+				"INSERT INTO orders(pizza_id, salad_id, drink_id, user_id) VALUES(NULL, NULL, ?, ?)");
 		ps.setInt(1, drink_id);
 		ps.setInt(2, userId);
 
 		if (ps.execute()) {
-			throw new AddProductException();
+			throw new BuyProductException();
 		}
 	}
 }

@@ -6,6 +6,6 @@ public class BuyProductException extends Exception {
 	@Override
 	public String getMessage() {
 		
-		return "Don`t offer such a product! Sorry :(";
+		return "Failed to buy the product! Sorry :(";
 	}
 }
