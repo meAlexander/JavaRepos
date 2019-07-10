@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import commands.Command;
-import commands.MainMenuCommand;
+import commands.menus.MainMenuCommand;
 
 public class CommandFlowThread extends Thread{
 	private Socket socket;
@@ -36,7 +36,6 @@ public class CommandFlowThread extends Thread{
 		}
 		Command previousCommand = null;
 		while(command != null) {
-			System.out.println("Next command: " + command.getClass());
 			Command newCommand = command.execute(previousCommand);
 			previousCommand = command;
 			command = newCommand;

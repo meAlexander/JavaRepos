@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import commands.menus.LoggedInAdminMenuCommand;
+import commands.menus.MainMenuCommand;
 import exceptions.LoginException;
 
 public class LoginAdminCommand implements Command {
@@ -22,17 +24,19 @@ public class LoginAdminCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter your adminName, password");
-		printOut.println("Your input please: ");
-		printOut.flush();
-
+		printOut.println("Please enter your adminName");
+		
 		try {
-			String admin = buffReader.readLine();
 			printOut.println("Your input please: ");
 			printOut.flush();
-			String pass = buffReader.readLine();
+			String adminName = buffReader.readLine();
+			
+			printOut.println("Please enter your password");
+			printOut.println("Your input please: ");
+			printOut.flush();
+			String password = buffReader.readLine();
 
-			if (checkAdminInfo(admin, pass)) {
+			if (checkAdminInfo(adminName, password)) {
 				return getNextCommand();
 			} else {
 				throw new LoginException();

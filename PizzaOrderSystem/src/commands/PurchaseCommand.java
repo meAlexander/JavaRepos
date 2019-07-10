@@ -8,18 +8,18 @@ import java.util.List;
 
 import exceptions.BuyProductException;
 import items.Item;
+import items.User;
 
 public class PurchaseCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
-	private String user;
+	private User user;
 	private List<Item> basket;
 
-	public PurchaseCommand(Connection connection, PrintStream printOut, String user, List<Item> basket) {
+	public PurchaseCommand(Connection connection, PrintStream printOut, User user) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.user = user;
-		this.basket = basket;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class PurchaseCommand implements Command {
 				.prepareStatement("INSERT INTO orders(itemName, count, username, dateOrder) VALUES(?, ?, ?, NOW())");
 		ps.setString(1, itemName);
 		ps.setInt(2, count);
-		ps.setString(3, user);
+		ps.setString(3, user.getUserName());
 
 		if (ps.execute()) {
 			throw new BuyProductException();

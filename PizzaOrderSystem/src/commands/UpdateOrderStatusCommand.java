@@ -69,9 +69,11 @@ public class UpdateOrderStatusCommand implements Command {
 	public void getOrders() throws SQLException {
 		ResultSet resultSet = connection
 				.prepareStatement("SELECT itemName, count, username, orderStatus, dateOrder FROM orders").executeQuery();
-
-		printOut.println(String.format("Item name: %s, Count: %d, Username: %s, Order status: %s, Date order: %s",
-				resultSet.getString("itemName"), resultSet.getInt("count"), resultSet.getString("username"),
-				resultSet.getString("orderStatus"), resultSet.getDate("dateOrder")));
+		
+		while(resultSet.next()) {
+			printOut.println(String.format("Item name: %s, Count: %d, Username: %s, Order status: %s, Date order: %s",
+					resultSet.getString("itemName"), resultSet.getInt("count"), resultSet.getString("username"),
+					resultSet.getString("orderStatus"), resultSet.getDate("dateOrder")));
+		}
 	}
 }

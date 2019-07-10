@@ -7,7 +7,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import commands.menus.LoggedInUserMenuCommand;
+import commands.menus.MainMenuCommand;
 import exceptions.LoginException;
+import items.User;
 
 public class LoginUserCommand implements Command {
 	private Connection connection;
@@ -22,17 +25,20 @@ public class LoginUserCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter your username, password");
-		printOut.println("Your input please: ");
-		printOut.flush();
+		printOut.println("Please enter your username");
 
 		try {
-			String user = buffReader.readLine();
 			printOut.println("Your input please: ");
 			printOut.flush();
-			String pass = buffReader.readLine();
+			String userName = buffReader.readLine();
+			
+			printOut.println("Please enter your password");
+			printOut.println("Your input please: ");
+			printOut.flush();
+			String password = buffReader.readLine();
 
-			if (checkUserInfo(user, pass)) {
+			if (checkUserInfo(userName, password)) {
+				User user = new User(userName);
 				return getNextCommand(user);
 			} else {
 				throw new LoginException();
@@ -50,8 +56,7 @@ public class LoginUserCommand implements Command {
 		return null;
 	}
 
-	private Command getNextCommand(String user) {
-
+	private Command getNextCommand(User user) {
 		return new LoggedInUserMenuCommand(connection, printOut, buffReader, user);
 	}
 

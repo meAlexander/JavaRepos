@@ -1,17 +1,17 @@
 package commands;
 
 import java.io.PrintStream;
-import java.util.List;
 
 import items.Item;
+import items.User;
 
 public class ViewBasketCommand implements Command {
 	private PrintStream printOut;
-	private List<Item> basket;
+	private User user;
 
-	public ViewBasketCommand(PrintStream printOut, List<Item> basket) {
+	public ViewBasketCommand(PrintStream printOut, User user) {
 		this.printOut = printOut;
-		this.basket = basket;
+		this.user = user;
 	}
 
 	@Override
@@ -19,8 +19,8 @@ public class ViewBasketCommand implements Command {
 		
 		printOut.println("That`s all products");
 
-		for (Item product : basket) {
-			printOut.println(product.toString());
+		for (Item item : user.getBasket()) {
+			printOut.println(item.toString());
 		}
 		printOut.flush();
 		return parent;
