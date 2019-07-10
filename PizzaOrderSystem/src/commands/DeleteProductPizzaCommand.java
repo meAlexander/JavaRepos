@@ -29,6 +29,7 @@ public class DeleteProductPizzaCommand implements Command {
 		try {
 			String pizza = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			String size = buffReader.readLine();
 
 			deletePizza(pizza, size);

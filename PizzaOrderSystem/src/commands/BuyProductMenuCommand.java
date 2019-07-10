@@ -4,23 +4,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
+import java.util.List;
 
 public class BuyProductMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	private String user;
+	private List<Item> basket;
 
-	public BuyProductMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user) {
+	public BuyProductMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user, List<Item> basket) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
 		this.user = user;
+		this.basket = basket;
 	}
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.Main menu");
+		printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.View basket 5.Main menu");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -31,7 +34,7 @@ public class BuyProductMenuCommand implements Command {
 			e.printStackTrace();
 		}catch (UnsupportedOperationException e) {
 			printOut.flush();
-			return new BuyProductMenuCommand(connection, printOut, buffReader, user);
+			return new BuyProductMenuCommand(connection, printOut, buffReader, user, basket);
 		}
 		return null;
 	}
@@ -40,13 +43,15 @@ public class BuyProductMenuCommand implements Command {
 		System.out.println("Returning: " + buyProductAnswer);
 		switch (buyProductAnswer) {
 		case "Pizza":
-			return new BuyProductPizzaCommand(connection, printOut, buffReader, user);
+			return new BuyProductPizzaCommand(connection, printOut, buffReader, user, basket);
 		case "Salad":
-			return new BuyProductSaladCommand(connection, printOut, buffReader, user);
+			return new BuyProductSaladCommand(connection, printOut, buffReader, user, basket);
 		case "Drink":
-			return new BuyProductDrinkCommand(connection, printOut, buffReader, user);
+			return new BuyProductDrinkCommand(connection, printOut, buffReader, user, basket);
+		case "View basket":
+			return new BasketCommand(printOut, basket);
 		case "Main menu":
-			return new MainMenu(connection, printOut, buffReader);
+			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new UnsupportedOperationException();
 		}

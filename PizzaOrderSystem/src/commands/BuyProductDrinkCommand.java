@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import exceptions.BuyProductException;
 
@@ -15,48 +16,57 @@ public class BuyProductDrinkCommand implements Command {
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	private String user;
+	private List<Item> basket;
 
-	public BuyProductDrinkCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user) {
+	public BuyProductDrinkCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user, List<Item> basket) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
 		this.user = user;
+		this.basket = basket;
 	}
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter drinkType and brand you want to buy");
+		printOut.println("Please enter drinkType and count you want to buy");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
 		try {
 			String drinkType = buffReader.readLine();
+//			printOut.println("Your input please: ");
+//			printOut.flush();
+//			String brand = buffReader.readLine();
 			printOut.println("Your input please: ");
-			String brand = buffReader.readLine();
-
-			buyDrink(drinkType, brand, user);
 			printOut.flush();
-			return parent;
-		} catch (SQLException e) {
-			e.printStackTrace();
+			int count = Integer.parseInt(buffReader.readLine());
+			Item drink = new Item(drinkType, count);
+			
+			basket.add(drink);
+			//buyDrink(drinkType, brand, user);
+			printOut.flush();
+			return parent;		
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (BuyProductException e) {
-			System.out.println(e.getMessage());
-		}
+		} 
+//		catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (BuyProductException e) {
+//			System.out.println(e.getMessage());
+//		}
 		return null;
 	}
 
-	public int getUserId(String username) throws SQLException {
+	public int getUserId() throws SQLException {
 		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id FROM users WHERE username = '%s'", username))
+				.prepareStatement(String.format("SELECT id FROM users WHERE username = '%s'", this.user))
 				.executeQuery();
 
 		resultSet.next();
 		return resultSet.getInt("id");
 	}
 
-	public void buyDrink(String drinkType, String brand, String user)
+	public void buyDrink(String drinkType, String brand)
 			throws SQLException, IOException, BuyProductException {
 		ResultSet resultSet = connection.prepareStatement(
 				String.format("SELECT id FROM drinks WHERE drink_type = '%s' AND brand = '%s'", drinkType, brand))
@@ -65,7 +75,7 @@ public class BuyProductDrinkCommand implements Command {
 		if (!resultSet.next()) {
 			throw new BuyProductException();
 		}
-		acceptDrinkOrder(resultSet.getInt("id"), getUserId(user));
+		acceptDrinkOrder(resultSet.getInt("id"), getUserId());
 	}
 
 	public void acceptDrinkOrder(int drink_id, int userId) throws SQLException, BuyProductException {

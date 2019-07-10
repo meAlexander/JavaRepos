@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 
-public class LoginUserMenuCommand implements Command {
+public class LoggedInUserMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	private String user;
 	
-	public LoginUserMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user) {
+	public LoggedInUserMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
@@ -29,7 +29,7 @@ public class LoginUserMenuCommand implements Command {
 			return getNextCommand(userMenuAnswer);
 		} catch (UnsupportedOperationException e) {
 			printOut.flush();
-			return new LoginUserMenuCommand(connection, printOut, buffReader, user);
+			return new LoggedInUserMenuCommand(connection, printOut, buffReader, user);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,11 +40,12 @@ public class LoginUserMenuCommand implements Command {
 		System.out.println("Returning: " + userMenuAnswer);
 		switch (userMenuAnswer) {
 		case "Buy products":
-			return new BuyProductMenuCommand(connection, printOut, buffReader, user);
+			return new UserCommand(connection, printOut, buffReader, user);
+			//return new BuyProductMenuCommand(connection, printOut, buffReader, user);
 		case "View products":
 			return new ViewProductsCommand(connection, printOut);
 		case "Main menu":
-			return new MainMenu(connection, printOut, buffReader);
+			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new UnsupportedOperationException();
 		}

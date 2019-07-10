@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 
-public class LoginMenu implements Command {
+public class LoginMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	
-	public LoginMenu(Connection connection, PrintStream printOut, BufferedReader buffReader) {
+	public LoginMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
@@ -27,7 +27,7 @@ public class LoginMenu implements Command {
 			return getNextCommand(userLoginAnswer);
 		} catch (UnsupportedOperationException e) {
 			printOut.flush();
-			return new LoginMenu(connection, printOut, buffReader);
+			return new LoginMenuCommand(connection, printOut, buffReader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,7 +42,7 @@ public class LoginMenu implements Command {
 		case "Admin":
 			return new LoginAdminCommand(connection, printOut, buffReader);
 		case "Main menu":
-			return new MainMenu(connection, printOut, buffReader);
+			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new UnsupportedOperationException();
 		}

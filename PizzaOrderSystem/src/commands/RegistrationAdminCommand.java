@@ -37,10 +37,13 @@ public class RegistrationAdminCommand implements Command {
 		try {
 			user = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			pass = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			phone = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			email = buffReader.readLine();
 
 			if (!(checkAdminName(connection, user)) && validatePass(pass) && !(validateEmailAdmin(connection, email))) {

@@ -29,6 +29,7 @@ public class DeleteProductDrinkCommand implements Command {
 		try {
 			String drinkType = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			String brand = buffReader.readLine();
 
 			deleteDrink(drinkType, brand);

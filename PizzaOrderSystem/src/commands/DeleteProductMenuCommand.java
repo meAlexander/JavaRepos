@@ -44,7 +44,7 @@ public class DeleteProductMenuCommand implements Command {
 		case "Drink":
 			return new DeleteProductDrinkCommand(connection, printOut, buffReader);
 		case "Main menu":
-			return new MainMenu(connection, printOut, buffReader);
+			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new UnsupportedOperationException();
 		}

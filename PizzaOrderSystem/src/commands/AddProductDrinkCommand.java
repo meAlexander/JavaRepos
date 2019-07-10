@@ -29,10 +29,13 @@ public class AddProductDrinkCommand implements Command {
 		try {
 			String drinkType = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			String brand = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			int quantity = Integer.parseInt(buffReader.readLine());
 			printOut.println("Your input please: ");
+			printOut.flush();
 			double price = Double.parseDouble(buffReader.readLine());
 
 			addDrink(drinkType, brand, quantity, price);

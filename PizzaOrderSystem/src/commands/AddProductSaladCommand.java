@@ -29,8 +29,10 @@ public class AddProductSaladCommand implements Command {
 		try {
 			String salad = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			String ingredients = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			double price = Double.parseDouble(buffReader.readLine());
 			
 			addSalad(salad, ingredients, price);

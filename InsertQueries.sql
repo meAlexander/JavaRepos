@@ -20,4 +20,4 @@ VALUES('alexander98', 'userPassword@1', '0894089756', 'alexander452@gmail.com'),
 
 INSERT INTO admins(adminName, password, phone, email)
 VALUES('TodorKocev8', 'adminPassword@1', '0886269718', 'todor78Kocev@gmail.com'),
-('Georgi96Kulev', 'adminPassword@2', '0897586147', 'kulev_georgi79@gmail.com');
+('Georgi96Kulev', 'adminPassword@2', '0897586147', 'kulev_georgi79@gmail.com');sport_id

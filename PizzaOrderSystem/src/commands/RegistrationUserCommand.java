@@ -37,10 +37,13 @@ public class RegistrationUserCommand implements Command {
 		try {
 			user = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			pass = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			phone = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			email = buffReader.readLine();
 
 			if (!(checkUserName(connection, user)) && validatePass(pass) && !(validateEmailUser(connection, email))) {

@@ -13,7 +13,7 @@ public class LoginUserCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
-	
+
 	public LoginUserCommand(Connection connection, PrintStream printOut, BufferedReader buffReader) {
 		this.connection = connection;
 		this.printOut = printOut;
@@ -29,16 +29,17 @@ public class LoginUserCommand implements Command {
 		try {
 			String user = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			String pass = buffReader.readLine();
-			
+
 			if (checkUserInfo(user, pass)) {
-				return getNextCommand("True", user);
+				return getNextCommand(user);
 			} else {
 				throw new LoginException();
 			}
 		} catch (UnsupportedOperationException e) {
 			printOut.flush();
-			return new MainMenu(connection, printOut, buffReader);
+			return new MainMenuCommand(connection, printOut, buffReader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -49,14 +50,10 @@ public class LoginUserCommand implements Command {
 		return null;
 	}
 
-	private Command getNextCommand(String userOptionAnswer, String user) {
-		System.out.println("Returning: " + userOptionAnswer);
-		switch (userOptionAnswer) {
-		case "True":
-			return new LoginUserMenuCommand(connection, printOut, buffReader, user);
-		default:
-			throw new UnsupportedOperationException();
-		}
+	private Command getNextCommand(String user) {
+		// System.out.println("Returning: " + userOptionAnswer);
+
+		return new LoggedInUserMenuCommand(connection, printOut, buffReader, user);
 	}
 
 	public boolean checkUserInfo(String user, String pass) throws SQLException {

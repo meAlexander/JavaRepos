@@ -44,7 +44,7 @@ public class AddProductMenuCommand implements Command {
 		case "Drink":
 			return new AddProductDrinkCommand(connection, printOut, buffReader);
 		case "Main menu":
-			return new MainMenu(connection, printOut, buffReader);
+			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new UnsupportedOperationException();
 		}

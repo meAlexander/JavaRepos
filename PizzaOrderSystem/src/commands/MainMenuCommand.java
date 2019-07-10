@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 
-public class MainMenu implements Command {
+public class MainMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 
-	public MainMenu(Connection connection, PrintStream printOut, BufferedReader buffReader) {
+	public MainMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
@@ -27,7 +27,7 @@ public class MainMenu implements Command {
 			return getNextCommand(userMenuAnswer);
 		} catch (UnsupportedOperationException e) {
 			printOut.flush();
-			return new MainMenu(connection, printOut, buffReader);
+			return new MainMenuCommand(connection, printOut, buffReader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,9 +38,9 @@ public class MainMenu implements Command {
 		System.out.println("Returning: " + userMenuAnswer);
 		switch (userMenuAnswer) {
 		case "Login":
-			return new LoginMenu(connection, printOut, buffReader);
+			return new LoginMenuCommand(connection, printOut, buffReader);
 		case "Registration":
-			return new RegistrationMenu(connection, printOut, buffReader);
+			return new RegistrationMenuCommand(connection, printOut, buffReader);
 		case "View products":
 			return new ViewProductsCommand(connection, printOut);
 		default:

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import exceptions.BuyProductException;
 
@@ -15,33 +16,41 @@ public class BuyProductSaladCommand implements Command {
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	private String user;
+	private List<Item> basket;
 
-	public BuyProductSaladCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user) {
+	public BuyProductSaladCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, String user, List<Item> basket) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
 		this.user = user;
+		this.basket = basket;
 	}
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter salad name you want to buy");
+		printOut.println("Please enter salad and count you want to buy");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
 		try {
 			String salad = buffReader.readLine();
-			buySalad(salad);
-
+			printOut.println("Your input please: ");
+			printOut.flush();
+			int count = Integer.parseInt(buffReader.readLine());
+			Item saladItem = new Item(salad, count);
+			
+			basket.add(saladItem);
+			//buySalad(salad);
 			printOut.flush();
 			return parent;
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (BuyProductException e) {
-			System.out.println(e.getMessage());
 		} 
+//		catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (BuyProductException e) {
+//			System.out.println(e.getMessage());
+//		}
 		return null;
 	}
 

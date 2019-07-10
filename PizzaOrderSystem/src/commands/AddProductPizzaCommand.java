@@ -29,10 +29,13 @@ public class AddProductPizzaCommand implements Command {
 		try {
 			String pizza = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			String size = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			String ingredients = buffReader.readLine();
 			printOut.println("Your input please: ");
+			printOut.flush();
 			double price = Double.parseDouble(buffReader.readLine());
 			
 			addPizza(pizza, size, ingredients, price);
