@@ -6,6 +6,8 @@ import java.io.PrintStream;
 import java.sql.Connection;
 import java.util.List;
 
+import items.Item;
+
 public class BuyProductMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
@@ -23,7 +25,7 @@ public class BuyProductMenuCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.View basket 5.Main menu");
+		printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.View basket 5.Purchase 5.Main menu");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -49,7 +51,9 @@ public class BuyProductMenuCommand implements Command {
 		case "Drink":
 			return new BuyProductDrinkCommand(connection, printOut, buffReader, user, basket);
 		case "View basket":
-			return new BasketCommand(printOut, basket);
+			return new ViewBasketCommand(printOut, basket);
+		case "Purchase":
+			return new PurchaseCommand(connection, printOut, user, basket);
 		case "Main menu":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:

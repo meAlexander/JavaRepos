@@ -37,11 +37,9 @@ public class LoggedInUserMenuCommand implements Command {
 	}
 	
 	private Command getNextCommand(String userMenuAnswer) {
-		System.out.println("Returning: " + userMenuAnswer);
 		switch (userMenuAnswer) {
 		case "Buy products":
 			return new UserCommand(connection, printOut, buffReader, user);
-			//return new BuyProductMenuCommand(connection, printOut, buffReader, user);
 		case "View products":
 			return new ViewProductsCommand(connection, printOut);
 		case "Main menu":

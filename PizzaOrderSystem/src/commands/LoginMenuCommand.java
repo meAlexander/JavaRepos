@@ -35,7 +35,6 @@ public class LoginMenuCommand implements Command {
 	}
 
 	private Command getNextCommand(String userLoginAnswer) {
-		System.out.println("Returning: " + userLoginAnswer);
 		switch (userLoginAnswer) {
 		case "User":
 			return new LoginUserCommand(connection, printOut, buffReader);

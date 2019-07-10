@@ -51,7 +51,6 @@ public class LoginUserCommand implements Command {
 	}
 
 	private Command getNextCommand(String user) {
-		// System.out.println("Returning: " + userOptionAnswer);
 
 		return new LoggedInUserMenuCommand(connection, printOut, buffReader, user);
 	}

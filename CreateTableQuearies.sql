@@ -43,6 +43,15 @@ email VARCHAR(50) NOT NULL UNIQUE
 
 CREATE TABLE orders(
 id INT(11) PRIMARY KEY AUTO_INCREMENT,
+itemName VARCHAR(25) NOT NULL,
+count INT(11) NOT NULL,
+username VARCHAR(25) NOT NULL,
+orderStatus ENUM('Waiting', 'Cooking', 'Delivery') DEFAULT 'Waiting',
+dateOrder DATETIME
+);
+
+/*CREATE TABLE orders(
+id INT(11) PRIMARY KEY AUTO_INCREMENT,
 pizza_id INT(11),
 CONSTRAINT FOREIGN KEY(pizza_id) REFERENCES pizzas(id)
 ON DELETE SET NULL ON UPDATE CASCADE,
@@ -57,4 +66,4 @@ CONSTRAINT FOREIGN KEY(user_id) REFERENCES users(id)
 ON DELETE SET NULL ON UPDATE CASCADE,
 orderStatus ENUM('Waiting', 'Cooking', 'Delivery') DEFAULT 'Waiting',
 dateOrder DATETIME DEFAULT NOW()
-);
+);*/

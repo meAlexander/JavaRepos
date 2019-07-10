@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import exceptions.BuyProductException;
+import items.Item;
+import items.SaladItem;
 
 public class BuyProductSaladCommand implements Command {
 	private Connection connection;
@@ -28,16 +30,17 @@ public class BuyProductSaladCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Please enter salad and count you want to buy");
+		printOut.println("Please enter salad");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
 		try {
 			String salad = buffReader.readLine();
+			printOut.println("Please enter count");
 			printOut.println("Your input please: ");
 			printOut.flush();
 			int count = Integer.parseInt(buffReader.readLine());
-			Item saladItem = new Item(salad, count);
+			Item saladItem = new SaladItem(salad, count);
 			
 			basket.add(saladItem);
 			//buySalad(salad);

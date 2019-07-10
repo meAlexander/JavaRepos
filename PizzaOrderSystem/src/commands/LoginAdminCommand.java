@@ -33,7 +33,7 @@ public class LoginAdminCommand implements Command {
 			String pass = buffReader.readLine();
 
 			if (checkAdminInfo(admin, pass)) {
-				return getNextCommand(admin);
+				return getNextCommand();
 			} else {
 				throw new LoginException();
 			}
@@ -50,8 +50,7 @@ public class LoginAdminCommand implements Command {
 		return null;
 	}
 
-	private Command getNextCommand(String user) {
-		// System.out.println("Returning: ");
+	private Command getNextCommand() {
 
 		return new LoggedInAdminMenuCommand(connection, printOut, buffReader);
 	}

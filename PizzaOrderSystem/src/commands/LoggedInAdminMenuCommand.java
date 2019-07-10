@@ -18,7 +18,7 @@ public class LoggedInAdminMenuCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Login admin menu: 1.Add product 2.Delete product 3.Main menu");
+		printOut.println("Login admin menu: 1.Add product 2.Delete product 3.Update order status 4.Main menu");
 		printOut.println("Your input please: ");
 		printOut.flush();
 
@@ -38,9 +38,11 @@ public class LoggedInAdminMenuCommand implements Command {
 		System.out.println("Returning: " + adminMenuAnswer);
 		switch (adminMenuAnswer) {
 		case "Add product":
-			 return new AddProductMenuCommand(connection, printOut, buffReader);
+			return new AddProductMenuCommand(connection, printOut, buffReader);
 		case "Delete product":
-			 return new DeleteProductMenuCommand(connection, printOut, buffReader);
+			return new DeleteProductMenuCommand(connection, printOut, buffReader);
+		case "Update order status":
+			return new UpdateOrderStatusCommand(connection, printOut, buffReader);
 		case "Main menu":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:

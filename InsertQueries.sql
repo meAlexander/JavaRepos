@@ -5,8 +5,8 @@ VALUES('BBQ CHICKEN', 'S', 'BBQ SAUCE, MOZZARELLA, CHICKEN BREAST, RED ONION, PE
 
 INSERT INTO salads(salad_name, ingredients, price)
 VALUES('GARDEN SALAD', 'Romaine, iceberg, red leaf lettuce, Roma tomatoes, cucumbers, red onions, carrots & croutons', 6.50),
-('CAESAR SALAD', 'Chopped romaine tossed in Caesar dressing, croutons & freshly grated Parmesan cheese', 5.20),
-('SANTA BARBARA COBB', 'Crisp shredded iceberg & romaine lettuce, tomatoes, avocado, blue cheese, crisp bacon & egg', 5.50);
+('CAESAR SALAD', 'Chopped romaine tossed in Caesar dressing, croutons & freshly grated Parmesan cheese', 4.20),
+('SANTA BARBARA COBB', 'Crisp iceberg & romaine lettuce, tomatoes, avocado, blue cheese, crisp bacon & egg', 5.50);
 
 INSERT INTO drinks(drink_type, brand, quantity, price)
 VALUES('BEER', 'Kamenitza', 500, 3),
@@ -20,4 +20,4 @@ VALUES('alexander98', 'userPassword@1', '0894089756', 'alexander452@gmail.com'),
 
 INSERT INTO admins(adminName, password, phone, email)
 VALUES('TodorKocev8', 'adminPassword@1', '0886269718', 'todor78Kocev@gmail.com'),
-('Georgi96Kulev', 'adminPassword@2', '0897586147', 'kulev_georgi79@gmail.com');sport_id
+('Georgi96Kulev', 'adminPassword@2', '0897586147', 'kulev_georgi79@gmail.com');

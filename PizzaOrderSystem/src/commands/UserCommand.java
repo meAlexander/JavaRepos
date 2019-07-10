@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import items.Item;
+
 public class UserCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;

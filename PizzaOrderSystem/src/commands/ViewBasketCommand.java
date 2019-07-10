@@ -3,11 +3,13 @@ package commands;
 import java.io.PrintStream;
 import java.util.List;
 
-public class BasketCommand implements Command {
+import items.Item;
+
+public class ViewBasketCommand implements Command {
 	private PrintStream printOut;
 	private List<Item> basket;
 
-	public BasketCommand(PrintStream printOut, List<Item> basket) {
+	public ViewBasketCommand(PrintStream printOut, List<Item> basket) {
 		this.printOut = printOut;
 		this.basket = basket;
 	}
