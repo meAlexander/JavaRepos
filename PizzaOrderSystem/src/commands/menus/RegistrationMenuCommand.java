@@ -6,8 +6,9 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import commands.Command;
-import commands.RegistrationAdminCommand;
-import commands.RegistrationUserCommand;
+import commands.inputs.registration.GetAdminInputRegistrationCommand;
+import commands.inputs.registration.GetUserInputRegistrationCommand;
+import exceptions.InputOptionException;
 
 public class RegistrationMenuCommand implements Command {
 	private Connection connection;
@@ -22,33 +23,32 @@ public class RegistrationMenuCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Registration menu: 1.User 2.Admin 3.Main menu");
-		printOut.println("Your input please: ");
-		printOut.flush();
-		
 		try {
-			String userRegistrationAnswer = buffReader.readLine();
-			return getNextCommand(userRegistrationAnswer);
-		} catch (UnsupportedOperationException e) {
+			printOut.println("Registration menu: 1.User 2.Admin 3.Main menu");
+			printOut.println("Your input please: ");
 			printOut.flush();
-			return new RegistrationMenuCommand(connection, printOut, buffReader);
+			String userRegistrationAnswer = buffReader.readLine();
+
+			return getNextCommand(userRegistrationAnswer);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (InputOptionException e) {
+			printOut.flush();
+			return new RegistrationMenuCommand(connection, printOut, buffReader);
 		}
 		return null;
 	}
 
-	private Command getNextCommand(String userRegistrationAnswer) {
-		System.out.println("Returning: " + userRegistrationAnswer);
+	private Command getNextCommand(String userRegistrationAnswer) throws InputOptionException {
 		switch (userRegistrationAnswer) {
 		case "User":
-			return new RegistrationUserCommand(connection, printOut, buffReader);
+			return new GetUserInputRegistrationCommand(connection, buffReader, printOut);
 		case "Admin":
-			return new RegistrationAdminCommand(connection, printOut, buffReader);
+			return new GetAdminInputRegistrationCommand(connection, buffReader, printOut);
 		case "Main menu":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
-			throw new UnsupportedOperationException();
+			throw new InputOptionException();
 		}
 	}
 }

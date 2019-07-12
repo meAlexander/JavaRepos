@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 
+import client.User;
 import commands.Command;
-import commands.actions.buy.BuyProductDrinkActionCommand;
+import commands.action.buy.BuyProductDrinkActionCommand;
 import items.DrinkItem;
-import items.User;
 
-public class GetDrinkInputBuyCommand implements Command{
+public class GetDrinkInputBuyCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
@@ -22,7 +22,7 @@ public class GetDrinkInputBuyCommand implements Command{
 		this.buffReader = buffReader;
 		this.user = user;
 	}
-	
+
 	@Override
 	public Command execute(Command parent) {
 		try {
@@ -30,17 +30,17 @@ public class GetDrinkInputBuyCommand implements Command{
 			printOut.println("Your input please: ");
 			printOut.flush();
 			String drinkType = buffReader.readLine();
-			
+
 			printOut.println("Please enter brand");
 			printOut.println("Your input please: ");
 			printOut.flush();
 			String brand = buffReader.readLine();
-			
+
 			printOut.println("Please enter count");
 			printOut.println("Your input please: ");
 			printOut.flush();
 			int count = Integer.parseInt(buffReader.readLine());
-			
+
 			DrinkItem drink = new DrinkItem(drinkType, count, brand);
 			return new BuyProductDrinkActionCommand(connection, printOut, drink, user, parent);
 		} catch (IOException e) {

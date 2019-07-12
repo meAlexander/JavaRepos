@@ -6,6 +6,6 @@ public class DeleteProductException extends Exception {
 	@Override
 	public String getMessage() {
 		
-		return "Failed to delete the product! :(";
+		return "Failed to delete the product!";
 	}
 }

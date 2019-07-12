@@ -6,7 +6,8 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import commands.Command;
-import commands.ViewProductsCommand;
+import commands.actions.ViewProductsCommand;
+import exceptions.InputOptionException;
 
 public class MainMenuCommand implements Command {
 	private Connection connection;
@@ -21,24 +22,23 @@ public class MainMenuCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		printOut.println("Main menu: 1.Login 2.Registration 3.View products");
-		printOut.println("Your input please: ");
-		printOut.flush();
-		
 		try {
-			String userMenuAnswer = buffReader.readLine();
-			return getNextCommand(userMenuAnswer);
-		} catch (UnsupportedOperationException e) {
+			printOut.println("Main menu: 1.Login 2.Registration 3.View products");
+			printOut.println("Your input please: ");
 			printOut.flush();
-			return new MainMenuCommand(connection, printOut, buffReader);
+			String userMenuAnswer = buffReader.readLine();
+
+			return getNextCommand(userMenuAnswer);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (InputOptionException e) {
+			printOut.flush();
+			return new MainMenuCommand(connection, printOut, buffReader);
 		}
 		return null;
 	}
 
-	private Command getNextCommand(String userMenuAnswer) {
-		System.out.println("Returning: " + userMenuAnswer);
+	private Command getNextCommand(String userMenuAnswer) throws InputOptionException {
 		switch (userMenuAnswer) {
 		case "Login":
 			return new LoginMenuCommand(connection, printOut, buffReader);
@@ -47,7 +47,7 @@ public class MainMenuCommand implements Command {
 		case "View products":
 			return new ViewProductsCommand(connection, printOut);
 		default:
-			throw new UnsupportedOperationException();
+			throw new InputOptionException();
 		}
 	}
 }

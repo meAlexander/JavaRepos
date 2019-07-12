@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import commands.Command;
 import exceptions.DeleteProductException;
+import exceptions.ProductInfoException;
 import items.PizzaItem;
 
 public class DeleteProductPizzaActionCommand implements Command {
@@ -16,7 +18,8 @@ public class DeleteProductPizzaActionCommand implements Command {
 	private PizzaItem pizza;
 	private Command nextCommand;
 
-	public DeleteProductPizzaActionCommand(Connection connection, PrintStream printOut, PizzaItem pizza, Command nextCommand) {
+	public DeleteProductPizzaActionCommand(Connection connection, PrintStream printOut, PizzaItem pizza,
+			Command nextCommand) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.pizza = pizza;
@@ -29,24 +32,38 @@ public class DeleteProductPizzaActionCommand implements Command {
 			deletePizza();
 			printOut.println("Pizza deleted!");
 			printOut.flush();
-			return nextCommand;
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DeleteProductException e) {
 			printOut.println(e.getMessage());
+		} catch (ProductInfoException e) {
+			printOut.println(e.getMessage());
 		}
-		return null;
+		return nextCommand;
 	}
 
-	public void deletePizza() throws SQLException, IOException, DeleteProductException {
+	public void deletePizza() throws SQLException, IOException, DeleteProductException, ProductInfoException {
+		checkPizzaInfo();
+
 		PreparedStatement ps = connection.prepareStatement("DELETE FROM pizzas WHERE pizza_name = ? AND size = ?");
 		ps.setString(1, pizza.getName());
 		ps.setString(2, pizza.getSize());
 
 		if (ps.execute()) {
 			throw new DeleteProductException();
+		}
+	}
+
+	public void checkPizzaInfo() throws SQLException, ProductInfoException {
+		ResultSet resultSet = connection
+				.prepareStatement(String.format("SELECT id FROM pizzas WHERE pizza_name = '%s' AND size = '%s'",
+						pizza.getName(), pizza.getSize()))
+				.executeQuery();
+
+		if (!resultSet.next()) {
+			throw new ProductInfoException();
 		}
 	}
 }

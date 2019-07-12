@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 
+import client.User;
 import commands.Command;
-import commands.actions.buy.BuyProductSaladActionCommand;
+import commands.action.buy.BuyProductSaladActionCommand;
 import items.SaladItem;
-import items.User;
 
 public class GetSaladInputBuyCommand implements Command{
 	private Connection connection;

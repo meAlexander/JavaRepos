@@ -2,8 +2,8 @@ package commands;
 
 import java.io.PrintStream;
 
+import client.User;
 import items.Item;
-import items.User;
 
 public class ViewBasketCommand implements Command {
 	private PrintStream printOut;

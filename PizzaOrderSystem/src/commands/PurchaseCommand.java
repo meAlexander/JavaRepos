@@ -6,9 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import exceptions.BuyProductException;
+import client.User;
+import exceptions.ProductInfoException;
 import items.Item;
-import items.User;
 
 public class PurchaseCommand implements Command {
 	private Connection connection;
@@ -30,15 +30,14 @@ public class PurchaseCommand implements Command {
 			return parent;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (BuyProductException e) {
+		} catch (ProductInfoException e) {
 			System.out.println(e.getMessage());
 		}
-
 		printOut.flush();
 		return parent;
 	}
 
-	public void purchaseProducts() throws SQLException, BuyProductException {
+	public void purchaseProducts() throws SQLException, ProductInfoException {
 
 		for (Item product : basket) {
 			printOut.println(product.toString());
@@ -49,7 +48,7 @@ public class PurchaseCommand implements Command {
 		}
 	}
 
-	public void acceptOrder(String itemName, int count) throws SQLException, BuyProductException {
+	public void acceptOrder(String itemName, int count) throws SQLException, ProductInfoException {
 		PreparedStatement ps = connection
 				.prepareStatement("INSERT INTO orders(itemName, count, username, dateOrder) VALUES(?, ?, ?, NOW())");
 		ps.setString(1, itemName);
@@ -57,7 +56,7 @@ public class PurchaseCommand implements Command {
 		ps.setString(3, user.getUserName());
 
 		if (ps.execute()) {
-			throw new BuyProductException();
+			throw new ProductInfoException();
 		}
 	}
 }

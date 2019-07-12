@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import commands.Command;
-import commands.actions.add.AddProductSaladActionCommand;
+import commands.action.add.AddProductSaladActionCommand;
 import items.SaladItem;
 
 public class GetSaladInputAddCommand implements Command {
@@ -19,7 +19,7 @@ public class GetSaladInputAddCommand implements Command {
 		this.printOut = printOut;
 		this.buffReader = buffReader;
 	}
-	
+
 	@Override
 	public Command execute(Command parent) {
 		try {
@@ -27,12 +27,12 @@ public class GetSaladInputAddCommand implements Command {
 			printOut.println("Your input please: ");
 			printOut.flush();
 			String saladName = buffReader.readLine();
-			
+
 			printOut.println("Please enter ingrediens");
 			printOut.println("Your input please: ");
 			printOut.flush();
 			String ingrediens = buffReader.readLine();
-			
+
 			printOut.println("Please enter price");
 			printOut.println("Your input please: ");
 			printOut.flush();

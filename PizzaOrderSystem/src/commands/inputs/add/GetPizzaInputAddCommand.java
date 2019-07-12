@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import commands.Command;
-import commands.actions.add.AddProductPizzaActionCommand;
+import commands.action.add.AddProductPizzaActionCommand;
 import items.PizzaItem;
 
 public class GetPizzaInputAddCommand implements Command{
@@ -42,7 +42,7 @@ public class GetPizzaInputAddCommand implements Command{
 			printOut.println("Your input please: ");
 			printOut.flush();
 			double price = Double.parseDouble(buffReader.readLine());
-			
+
 			PizzaItem pizza = new PizzaItem(pizzaName, ingredients, size, price);
 			return new AddProductPizzaActionCommand(connection, printOut, pizza, parent);
 		} catch (IOException e) {
