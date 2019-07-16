@@ -2,13 +2,12 @@ package commands.action.buy;
 
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import client.User;
 import commands.Command;
-import exceptions.ProductInfoException;
+import exceptions.ProductException;
 import exceptions.PurchaseException;
 import items.PizzaItem;
 
@@ -23,20 +22,20 @@ public class BuyProductPizzaActionCommand implements Command {
 			Command nextCommand) {
 		this.connection = connection;
 		this.printOut = printOut;
-		this.user = user;
 		this.pizza = pizza;
+		this.user = user;
 		this.nextCommand = nextCommand;
 	}
 
 	@Override
 	public Command execute(Command parent) {
 		try {
-			acceptPizzaOrder();
-			printOut.println("Accepted order!");
+			checkPizzaInfo();
+			printOut.println("Product added to the basket!");
 			printOut.flush();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (ProductInfoException e) {
+		} catch (ProductException e) {
 			printOut.println(e.getMessage());
 		} catch (PurchaseException e) {
 			printOut.println(e.getMessage());
@@ -44,28 +43,31 @@ public class BuyProductPizzaActionCommand implements Command {
 		return nextCommand;
 	}
 
-	public void acceptPizzaOrder() throws SQLException, PurchaseException, ProductInfoException {
-		checkPizzaInfo();
-
-		PreparedStatement ps = connection
-				.prepareStatement("INSERT INTO orders(itemName, count, username, dateOrder) VALUES(?, ?, ?, NOW())");
-		ps.setString(1, pizza.getName());
-		ps.setInt(2, pizza.getCount());
-		ps.setString(3, user.getUserName());
-
-		if (ps.execute()) {
-			throw new PurchaseException();
-		}
+	public void addPizza(ResultSet resultSet) throws SQLException {
+//		PreparedStatement ps = connection
+//				.prepareStatement("INSERT INTO orders(itemName, count, username, dateOrder) VALUES(?, ?, ?, NOW())");
+//		ps.setString(1, pizza.getName());
+//		ps.setInt(2, pizza.getCount());
+//		ps.setString(3, user.getUserName());
+//
+//		if (ps.execute()) {
+//			throw new PurchaseException();
+//		}
+		
+		PizzaItem newPizza = new PizzaItem(resultSet.getString("pizza_name"), resultSet.getString("size"),
+				pizza.getCount(), resultSet.getDouble("price"));
+		user.getBasket().add(newPizza);
 	}
 
-	public void checkPizzaInfo() throws SQLException, ProductInfoException {
+	public void checkPizzaInfo() throws SQLException, ProductException, PurchaseException {
 		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id FROM pizzas WHERE pizza_name = '%s' AND size = '%s'",
-						pizza.getName(), pizza.getSize()))
+				.prepareStatement(
+						String.format("SELECT pizza_name, size, price FROM pizzas WHERE id = %d", pizza.getPizzaID()))
 				.executeQuery();
-
+		
 		if (!resultSet.next()) {
-			throw new ProductInfoException();
+			throw new ProductException();
 		}
+		addPizza(resultSet);
 	}
 }

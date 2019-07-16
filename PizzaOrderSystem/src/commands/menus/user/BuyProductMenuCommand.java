@@ -7,10 +7,11 @@ import java.sql.Connection;
 
 import client.User;
 import commands.Command;
-import commands.actions.GetUserOrdersActionCommand;
-import commands.inputs.buy.GetDrinkInputBuyCommand;
-import commands.inputs.buy.GetPizzaInputBuyCommand;
-import commands.inputs.buy.GetSaladInputBuyCommand;
+import commands.action.getBasket.GetUserBasketActionCommand;
+import commands.action.getOrders.GetUserOrdersActionCommand;
+import commands.action.getProducts.GetAllDrinksCommand;
+import commands.action.getProducts.GetAllPizzasCommand;
+import commands.action.getProducts.GetAllSaladsCommand;
 import commands.menus.MainMenuCommand;
 import exceptions.InputOptionException;
 
@@ -30,7 +31,7 @@ public class BuyProductMenuCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.My orders 5.User menu 6.Main menu");
+			printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.My orders 5.My basket 6.User menu 7.Main menu");
 			printOut.println("Your input please: ");
 			printOut.flush();
 			String buyProductAnswer = buffReader.readLine();
@@ -48,16 +49,25 @@ public class BuyProductMenuCommand implements Command {
 	private Command getNextCommand(String buyProductAnswer, Command parent) throws InputOptionException {
 		switch (buyProductAnswer) {
 		case "Pizza":
-			return new GetPizzaInputBuyCommand(connection, printOut, buffReader, user);
+		case "1":
+			return new GetAllPizzasCommand(connection, printOut, buffReader, user);
 		case "Salad":
-			return new GetSaladInputBuyCommand(connection, printOut, buffReader, user);
+		case "2":
+			return new GetAllSaladsCommand(connection, printOut, buffReader, user);
 		case "Drink":
-			return new GetDrinkInputBuyCommand(connection, printOut, buffReader, user);
+		case "3":
+			return new GetAllDrinksCommand(connection, printOut, buffReader, user);
 		case "My orders":
+		case "4":
 			return new GetUserOrdersActionCommand(connection, printOut, user);
+		case "My basket":
+		case "5":
+			return new GetUserBasketActionCommand(connection, printOut, buffReader, user);
 		case "User menu":
+		case "6":
 			return new LoggedInUserMenuCommand(connection, printOut, buffReader, user);
 		case "Main menu":
+		case "7":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new InputOptionException();

@@ -2,13 +2,12 @@ package commands.action.buy;
 
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import client.User;
 import commands.Command;
-import exceptions.ProductInfoException;
+import exceptions.ProductException;
 import exceptions.PurchaseException;
 import items.DrinkItem;
 
@@ -31,12 +30,12 @@ public class BuyProductDrinkActionCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			acceptDrinkOrder();
-			printOut.println("Accepted order!");
+			checkDrinkInfo();
+			printOut.println("Product added to the basket!");
 			printOut.flush();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (ProductInfoException e) {
+		} catch (ProductException e) {
 			printOut.println(e.getMessage());
 		} catch (PurchaseException e) {
 			printOut.println(e.getMessage());
@@ -44,28 +43,30 @@ public class BuyProductDrinkActionCommand implements Command {
 		return nextCommand;
 	}
 
-	public void acceptDrinkOrder() throws SQLException, PurchaseException, ProductInfoException {
-		checkDrinkInfo();
+	public void addDrink(ResultSet resultSet) throws SQLException, PurchaseException, ProductException {
+//		PreparedStatement ps = connection
+//				.prepareStatement("INSERT INTO orders(itemName, count, username, dateOrder) VALUES(?, ?, ?, NOW())");
+//		ps.setString(1, drink.getName());
+//		ps.setInt(2, drink.getCount());
+//		ps.setString(3, user.getUserName());
+//
+//		if (ps.execute()) {
+//			throw new PurchaseException();
+//		}
 
-		PreparedStatement ps = connection
-				.prepareStatement("INSERT INTO orders(itemName, count, username) VALUES(?, ?, ?)");
-		ps.setString(1, drink.getName());
-		ps.setInt(2, drink.getCount());
-		ps.setString(3, user.getUserName());
-
-		if (ps.execute()) {
-			throw new PurchaseException();
-		}
+		DrinkItem newDrink = new DrinkItem(resultSet.getString("drink_type"), resultSet.getString("brand"),
+				resultSet.getInt("quantity"), drink.getCount(), resultSet.getDouble("price"));
+		user.getBasket().add(newDrink);
 	}
 
-	public void checkDrinkInfo() throws SQLException, ProductInfoException {
-		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id FROM drinks WHERE drink_type = '%s' AND brand = '%s'",
-						drink.getName(), drink.getBrand()))
+	public void checkDrinkInfo() throws SQLException, ProductException, PurchaseException {
+		ResultSet resultSet = connection.prepareStatement(String
+				.format("SELECT drink_type, brand, quantity, price FROM drinks WHERE id = %d", drink.getDrinkID()))
 				.executeQuery();
 
 		if (!resultSet.next()) {
-			throw new ProductInfoException();
+			throw new ProductException();
 		}
+		addDrink(resultSet);
 	}
 }

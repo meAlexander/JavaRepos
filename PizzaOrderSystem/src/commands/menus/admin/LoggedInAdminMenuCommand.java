@@ -43,12 +43,16 @@ public class LoggedInAdminMenuCommand implements Command {
 	private Command getNextCommand(String adminMenuAnswer) throws InputOptionException {
 		switch (adminMenuAnswer) {
 		case "Add product":
+		case "1":
 			return new AddProductMenuCommand(connection, printOut, buffReader);
 		case "Delete product":
+		case "2":
 			return new DeleteProductMenuCommand(connection, printOut, buffReader);
 		case "Update order status":
+		case "3":
 			return new GetOrderInputUpdateCommand(connection, printOut, buffReader);
 		case "Main menu":
+		case "4":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new InputOptionException();

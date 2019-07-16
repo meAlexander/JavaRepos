@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 import commands.Command;
 import exceptions.DeleteProductException;
-import exceptions.ProductInfoException;
+import exceptions.ProductException;
 import items.SaladItem;
 
 public class DeleteProductSaladActionCommand implements Command {
@@ -38,13 +38,13 @@ public class DeleteProductSaladActionCommand implements Command {
 			e.printStackTrace();
 		} catch (DeleteProductException e) {
 			printOut.println(e.getMessage());
-		} catch (ProductInfoException e) {
+		} catch (ProductException e) {
 			printOut.println(e.getMessage());
 		}
 		return nextCommand;
 	}
 
-	public void deleteSalad() throws SQLException, IOException, DeleteProductException, ProductInfoException {
+	public void deleteSalad() throws SQLException, IOException, DeleteProductException, ProductException {
 		checkSaladInfo();
 
 		PreparedStatement ps = connection.prepareStatement("DELETE FROM salads WHERE salad_name = ?");
@@ -55,13 +55,13 @@ public class DeleteProductSaladActionCommand implements Command {
 		}
 	}
 
-	public void checkSaladInfo() throws SQLException, ProductInfoException {
+	public void checkSaladInfo() throws SQLException, ProductException {
 		ResultSet resultSet = connection
 				.prepareStatement(String.format("SELECT id FROM drinks WHERE salad_name = '%s'", salad.getName()))
 				.executeQuery();
 
 		if (!resultSet.next()) {
-			throw new ProductInfoException();
+			throw new ProductException();
 		}
 	}
 }

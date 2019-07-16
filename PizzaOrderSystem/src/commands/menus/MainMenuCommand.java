@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import commands.Command;
-import commands.actions.ViewProductsCommand;
+import commands.action.getProducts.GetAllProductsCommand;
 import exceptions.InputOptionException;
 
 public class MainMenuCommand implements Command {
@@ -41,11 +41,14 @@ public class MainMenuCommand implements Command {
 	private Command getNextCommand(String userMenuAnswer) throws InputOptionException {
 		switch (userMenuAnswer) {
 		case "Login":
+		case "1":
 			return new LoginMenuCommand(connection, printOut, buffReader);
 		case "Registration":
+		case "2":
 			return new RegistrationMenuCommand(connection, printOut, buffReader);
 		case "View products":
-			return new ViewProductsCommand(connection, printOut);
+		case "3":
+			return new GetAllProductsCommand(connection, printOut);
 		default:
 			throw new InputOptionException();
 		}

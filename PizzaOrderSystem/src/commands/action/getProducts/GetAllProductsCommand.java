@@ -1,4 +1,4 @@
-package commands.actions;
+package commands.action.getProducts;
 
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -9,11 +9,11 @@ import java.util.List;
 
 import commands.Command;
 
-public class ViewProductsCommand implements Command {
+public class GetAllProductsCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 
-	public ViewProductsCommand(Connection connection, PrintStream printOut) {
+	public GetAllProductsCommand(Connection connection, PrintStream printOut) {
 		this.connection = connection;
 		this.printOut = printOut;
 	}
@@ -23,9 +23,9 @@ public class ViewProductsCommand implements Command {
 		printOut.println("That`s all available products");
 		List<String> allProducts = new ArrayList<String>();
 		try {
-			allProducts.addAll(getPizzas(connection, printOut));
-			allProducts.addAll(getSalads(connection, printOut));
-			allProducts.addAll(getDrinks(connection, printOut));
+			allProducts.addAll(getPizzas());
+			allProducts.addAll(getSalads());
+			allProducts.addAll(getDrinks());
 
 			for (String product : allProducts) {
 				printOut.println(product);
@@ -38,7 +38,7 @@ public class ViewProductsCommand implements Command {
 		return null;
 	}
 
-	public List<String> getPizzas(Connection connection, PrintStream printout) throws SQLException {
+	public List<String> getPizzas() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement("SELECT * FROM pizzas").executeQuery();
 		List<String> pizzasList = new ArrayList<>();
 		while (resultSet.next()) {
@@ -50,7 +50,7 @@ public class ViewProductsCommand implements Command {
 		return pizzasList;
 	}
 
-	public List<String> getSalads(Connection connection, PrintStream printout) throws SQLException {
+	public List<String> getSalads() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement("SELECT * FROM salads").executeQuery();
 		List<String> saladsList = new ArrayList<>();
 		while (resultSet.next()) {
@@ -62,7 +62,7 @@ public class ViewProductsCommand implements Command {
 		return saladsList;
 	}
 
-	public List<String> getDrinks(Connection connection, PrintStream printout) throws SQLException {
+	public List<String> getDrinks() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement("SELECT * FROM drinks").executeQuery();
 		List<String> drinksList = new ArrayList<String>();
 		while (resultSet.next()) {

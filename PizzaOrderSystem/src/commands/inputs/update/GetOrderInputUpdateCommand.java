@@ -7,8 +7,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import commands.Command;
+import commands.action.getOrders.GetAllOrdersActionCommand;
 import commands.action.update.UpdateOrderStatusActionCommand;
-import commands.actions.GetAllOrdersActionCommand;
 
 public class GetOrderInputUpdateCommand implements Command {
 	private Connection connection;

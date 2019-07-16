@@ -44,14 +44,19 @@ public class AddProductMenuCommand implements Command {
 	private Command getNextCommand(String buyProductAnswer) throws InputOptionException {
 		switch (buyProductAnswer) {
 		case "Pizza":
+		case "1":
 			return new GetPizzaInputAddCommand(connection, printOut, buffReader);
 		case "Salad":
+		case "2":
 			return new GetSaladInputAddCommand(connection, printOut, buffReader);
 		case "Drink":
+		case "3":
 			return new GetDrinkInputAddCommand(connection, printOut, buffReader);
 		case "Admin menu":
+		case "4":
 			return new LoggedInAdminMenuCommand(connection, printOut, buffReader);
 		case "Main menu":
+		case "5":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new InputOptionException();

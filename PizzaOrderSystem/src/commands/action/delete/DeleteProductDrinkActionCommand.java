@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import commands.Command;
 import exceptions.DeleteProductException;
-import exceptions.ProductInfoException;
+import exceptions.ProductException;
 import items.DrinkItem;
 
 public class DeleteProductDrinkActionCommand implements Command {
@@ -35,13 +35,13 @@ public class DeleteProductDrinkActionCommand implements Command {
 			e.printStackTrace();
 		} catch (DeleteProductException e) {
 			printOut.println(e.getMessage());
-		} catch (ProductInfoException e) {
+		} catch (ProductException e) {
 			printOut.println(e.getMessage());
 		}
 		return nextCommand;
 	}
 
-	public void deleteDrink() throws SQLException, DeleteProductException, ProductInfoException {
+	public void deleteDrink() throws SQLException, DeleteProductException, ProductException {
 		checkDrinkInfo();
 
 		PreparedStatement ps = connection
@@ -55,14 +55,14 @@ public class DeleteProductDrinkActionCommand implements Command {
 		}
 	}
 
-	public void checkDrinkInfo() throws SQLException, ProductInfoException {
+	public void checkDrinkInfo() throws SQLException, ProductException {
 		ResultSet resultSet = connection.prepareStatement(
 				String.format("SELECT id FROM drinks WHERE drink_type = '%s' AND brand = '%s' AND quantity = %d",
 						drink.getName(), drink.getBrand(), drink.getQuantity()))
 				.executeQuery();
 
 		if (!resultSet.next()) {
-			throw new ProductInfoException();
+			throw new ProductException();
 		}
 	}
 }

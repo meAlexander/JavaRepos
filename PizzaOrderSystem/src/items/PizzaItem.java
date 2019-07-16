@@ -1,25 +1,31 @@
 package items;
 
 public class PizzaItem extends Item {
+	private int pizzaID;
 	private String size;
 	private String ingredients;
 	
-	public PizzaItem(String name, int count, String ingredients, String size, double price) {
+	public PizzaItem(int pizzaID, String name, int count, String ingredients, String size, double price) {
 		super(name, count, price);
+		this.pizzaID = pizzaID;
 		this.size = size;
 		this.ingredients = ingredients;
 	}
 	
 	public PizzaItem(String name, String ingredients, String size, double price) {
-		this(name, 0, ingredients, size, price);
+		this(0, name, 0, ingredients, size, price);
 	}
 	
-	public PizzaItem(String name, int count, String size) {
-		this(name, count, "NULL", size, 0);
+	public PizzaItem(int pizzaID, int count) {
+		this(pizzaID, "NULL", count, "NULL", "NULL", 0);
 	}
 	
-	public PizzaItem(String name, String size) {
-		this(name, 0, "NULL", size, 0);
+	public PizzaItem(String name, String size, int count, double price) {
+		this(0, name, count, "NULL", size, price);
+	}
+	
+	public PizzaItem(int pizzaID) {
+		this(pizzaID, "NULL", 0, "NULL", "NULL", 0);
 	}
 	
 	public String getSize() {
@@ -28,6 +34,10 @@ public class PizzaItem extends Item {
 	
 	public String getIngredients() {
 		return ingredients;
+	}
+	
+	public int getPizzaID() {
+		return pizzaID;
 	}
 
 	public String toString() {

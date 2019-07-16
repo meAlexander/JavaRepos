@@ -15,34 +15,42 @@ public class GetDrinkInputBuyCommand implements Command {
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	private User user;
+	private Command nextCommand;
 
-	public GetDrinkInputBuyCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, User user) {
+	public GetDrinkInputBuyCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, User user,
+			Command nextCommand) {
 		this.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
 		this.user = user;
+		this.nextCommand = nextCommand;
 	}
 
 	@Override
 	public Command execute(Command parent) {
 		try {
-			printOut.println("Please enter drink type");
+//			printOut.println("Please enter drink type");
+//			printOut.println("Your input please: ");
+//			printOut.flush();
+//			String drinkType = buffReader.readLine();
+//
+//			printOut.println("Please enter brand");
+//			printOut.println("Your input please: ");
+//			printOut.flush();
+//			String brand = buffReader.readLine();
+			
+			printOut.println("Please enter drink id");
 			printOut.println("Your input please: ");
 			printOut.flush();
-			String drinkType = buffReader.readLine();
+			int drinkID = Integer.parseInt(buffReader.readLine());
 
-			printOut.println("Please enter brand");
-			printOut.println("Your input please: ");
-			printOut.flush();
-			String brand = buffReader.readLine();
-
-			printOut.println("Please enter count");
+			printOut.println("Please enter amount");
 			printOut.println("Your input please: ");
 			printOut.flush();
 			int count = Integer.parseInt(buffReader.readLine());
 
-			DrinkItem drink = new DrinkItem(drinkType, count, brand);
-			return new BuyProductDrinkActionCommand(connection, printOut, drink, user, parent);
+			DrinkItem drink = new DrinkItem(drinkID, count);
+			return new BuyProductDrinkActionCommand(connection, printOut, drink, user, nextCommand);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

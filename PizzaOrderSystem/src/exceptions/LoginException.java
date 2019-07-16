@@ -8,5 +8,4 @@ public class LoginException extends Exception{
 		
 		return "Wrong username or password! Try again!";
 	}
-	
 }

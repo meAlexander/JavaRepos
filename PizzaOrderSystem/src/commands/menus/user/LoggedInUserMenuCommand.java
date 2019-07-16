@@ -7,7 +7,7 @@ import java.sql.Connection;
 
 import client.User;
 import commands.Command;
-import commands.actions.ViewProductsCommand;
+import commands.action.getProducts.GetAllProductsCommand;
 import commands.menus.MainMenuCommand;
 import exceptions.InputOptionException;
 
@@ -45,10 +45,13 @@ public class LoggedInUserMenuCommand implements Command {
 	private Command getNextCommand(String userMenuAnswer) throws InputOptionException {
 		switch (userMenuAnswer) {
 		case "Buy products":
+		case "1":
 			return new BuyProductMenuCommand(connection, printOut, buffReader, user);
 		case "View products":
-			return new ViewProductsCommand(connection, printOut);
+		case "2":
+			return new GetAllProductsCommand(connection, printOut);
 		case "Main menu":
+		case "3":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new InputOptionException();

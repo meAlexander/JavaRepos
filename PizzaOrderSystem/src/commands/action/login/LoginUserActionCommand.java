@@ -44,7 +44,7 @@ public class LoginUserActionCommand implements Command{
 
 	public boolean checkUserInfo() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement(
-				String.format("SELECT username FROM users WHERE username = '%s' AND password = '%s'", user.getUserName(), user.getPassword()))
+				String.format("SELECT username FROM users WHERE username COLLATE utf8mb4_0900_as_cs LIKE '%s' AND password LIKE '%s'", user.getUserName(), user.getPassword()))
 				.executeQuery();
 
 		if (resultSet.next()) {

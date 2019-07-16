@@ -42,10 +42,13 @@ public class RegistrationMenuCommand implements Command {
 	private Command getNextCommand(String userRegistrationAnswer) throws InputOptionException {
 		switch (userRegistrationAnswer) {
 		case "User":
+		case "1":
 			return new GetUserInputRegistrationCommand(connection, buffReader, printOut);
 		case "Admin":
+		case "2":
 			return new GetAdminInputRegistrationCommand(connection, buffReader, printOut);
 		case "Main menu":
+		case "3":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new InputOptionException();

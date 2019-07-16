@@ -1,4 +1,4 @@
-package commands.actions;
+package commands.action.getOrders;
 
 import java.io.PrintStream;
 import java.sql.Connection;

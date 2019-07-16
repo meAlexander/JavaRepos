@@ -42,10 +42,13 @@ public class LoginMenuCommand implements Command {
 	private Command getNextCommand(String userLoginAnswer) throws InputOptionException {
 		switch (userLoginAnswer) {
 		case "User":
+		case "1":
 			return new GetUserInputLoginCommand(connection, printOut, buffReader);
 		case "Admin":
+		case "2":
 			return new GetAdminInputLoginCommand(connection, printOut, buffReader);
 		case "Main menu":
+		case "3":
 			return new MainMenuCommand(connection, printOut, buffReader);
 		default:
 			throw new InputOptionException();

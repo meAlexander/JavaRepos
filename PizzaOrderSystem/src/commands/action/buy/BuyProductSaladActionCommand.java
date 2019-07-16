@@ -2,13 +2,12 @@ package commands.action.buy;
 
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import client.User;
 import commands.Command;
-import exceptions.ProductInfoException;
+import exceptions.ProductException;
 import exceptions.PurchaseException;
 import items.SaladItem;
 
@@ -31,12 +30,12 @@ public class BuyProductSaladActionCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			acceptSaladOrder();
-			printOut.println("Accepted order!");
+			checkSaladInfo();
+			printOut.println("Product added to the basket!");
 			printOut.flush();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (ProductInfoException e) {
+		} catch (ProductException e) {
 			printOut.println(e.getMessage());
 		} catch (PurchaseException e) {
 			printOut.println(e.getMessage());
@@ -44,27 +43,30 @@ public class BuyProductSaladActionCommand implements Command {
 		return nextCommand;
 	}
 
-	public void acceptSaladOrder() throws SQLException, PurchaseException, ProductInfoException {
-		checkSaladInfo();
-
-		PreparedStatement ps = connection
-				.prepareStatement("INSERT INTO orders(itemName, count, username) VALUES(?, ?, ?)");
-		ps.setString(1, salad.getName());
-		ps.setInt(2, salad.getCount());
-		ps.setString(3, user.getUserName());
-
-		if (ps.execute()) {
-			throw new PurchaseException();
-		}
+	public void addSalad(ResultSet resultSet) throws SQLException, PurchaseException, ProductException {
+//		PreparedStatement ps = connection
+//				.prepareStatement("INSERT INTO orders(itemName, count, username, dateOrder) VALUES(?, ?, ?, NOW())");
+//		ps.setString(1, salad.getName());
+//		ps.setInt(2, salad.getCount());
+//		ps.setString(3, user.getUserName());
+//
+//		if (ps.execute()) {
+//			throw new PurchaseException();
+//		}
+		SaladItem newSalad = new SaladItem(resultSet.getString("salad_name"), salad.getCount(),
+				resultSet.getDouble("price"));
+		user.getBasket().add(newSalad);
 	}
 
-	public void checkSaladInfo() throws SQLException, ProductInfoException {
+	public void checkSaladInfo() throws SQLException, ProductException, PurchaseException {
 		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id FROM salads WHERE salad_name = '%s'", salad.getName()))
+				.prepareStatement(
+						String.format("SELECT salad_name, price FROM salads WHERE id = %d", salad.getSaladID()))
 				.executeQuery();
 
 		if (!resultSet.next()) {
-			throw new ProductInfoException();
+			throw new ProductException();
 		}
+		addSalad(resultSet);
 	}
 }
