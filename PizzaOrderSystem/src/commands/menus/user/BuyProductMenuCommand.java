@@ -34,12 +34,13 @@ public class BuyProductMenuCommand implements Command {
 			printOut.println("Buy product menu: 1.Pizza 2.Salad 3.Drink 4.My orders 5.My basket 6.User menu 7.Main menu");
 			printOut.println("Your input please: ");
 			printOut.flush();
+			
 			String buyProductAnswer = buffReader.readLine();
-
 			return getNextCommand(buyProductAnswer, parent);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InputOptionException e) {
+			printOut.println("Wrong option!");
 			printOut.flush();
 			return new BuyProductMenuCommand(connection, printOut, buffReader, user);
 		}

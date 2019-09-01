@@ -29,16 +29,6 @@ public class GetDrinkInputBuyCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-//			printOut.println("Please enter drink type");
-//			printOut.println("Your input please: ");
-//			printOut.flush();
-//			String drinkType = buffReader.readLine();
-//
-//			printOut.println("Please enter brand");
-//			printOut.println("Your input please: ");
-//			printOut.flush();
-//			String brand = buffReader.readLine();
-			
 			printOut.println("Please enter drink id");
 			printOut.println("Your input please: ");
 			printOut.flush();

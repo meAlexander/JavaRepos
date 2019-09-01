@@ -23,11 +23,6 @@ public class GetSaladInputDeleteCommand implements Command{
 	@Override
 	public Command execute(Command parent) {
 		try {
-//			printOut.println("Please enter salad name");
-//			printOut.println("Your input please: ");
-//			printOut.flush();
-//			String saladName = buffReader.readLine();
-			
 			printOut.println("Please enter salad id");
 			printOut.println("Your input please: ");
 			printOut.flush();

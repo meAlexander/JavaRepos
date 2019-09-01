@@ -2,12 +2,12 @@ package items;
 
 public class Item {
 	private String name;
-	private int count;
+	private int amount;
 	private double price;
 	
-	public Item(String name, int count, double price) {
+	public Item(String name, int amount, double price) {
 		this.name = name;
-		this.count = count;
+		this.amount = amount;
 		this.price = price;
 	}
 	
@@ -19,12 +19,11 @@ public class Item {
 		return name;
 	}
 
-	public int getCount() {
-		return count;
+	public int getAmount() {
+		return amount;
 	}
 	
 	public String toString() {
-		
-		return String.format("Name: %s, Count: %d", this.getName(), this.getCount());
+		return String.format("Name: %s, Amount: %d", this.getName(), this.getAmount());
 	}
 }

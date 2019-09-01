@@ -26,9 +26,9 @@ public class GetUserBasketActionCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		printOut.println(String.format("%s basket", user.getUserName()));
+		printOut.flush();
 		userBasket();
 
-		printOut.flush();
 		return new BasketMenuCommand(connection, printOut, buffReader, user, parent);
 	}
 

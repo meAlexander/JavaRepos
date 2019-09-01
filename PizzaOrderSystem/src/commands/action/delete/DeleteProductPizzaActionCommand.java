@@ -1,6 +1,5 @@
 package commands.action.delete;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,41 +28,38 @@ public class DeleteProductPizzaActionCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			deletePizza();
+			checkPizzaInfo();
 			printOut.println("Pizza deleted!");
 			printOut.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DeleteProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		} catch (ProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}
 
-	public void deletePizza() throws SQLException, IOException, DeleteProductException, ProductException {
-		checkPizzaInfo();
-
-		PreparedStatement ps = connection.prepareStatement("DELETE FROM pizzas WHERE pizza_name = ? AND size = ?");
-		ps.setString(1, pizza.getName());
-		ps.setString(2, pizza.getSize());
+	public void deletePizza() throws SQLException, DeleteProductException {
+		PreparedStatement ps = connection.prepareStatement("DELETE FROM pizzas WHERE id = ?");
+		ps.setInt(1, pizza.getPizzaID());
 
 		if (ps.execute()) {
 			throw new DeleteProductException();
 		}
 	}
 
-	public void checkPizzaInfo() throws SQLException, ProductException {
+	public void checkPizzaInfo() throws SQLException, ProductException, DeleteProductException {
 		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id FROM pizzas WHERE pizza_name = '%s' AND size = '%s'",
-						pizza.getName(), pizza.getSize()))
+				.prepareStatement(String.format("SELECT id FROM pizzas WHERE id = %d", pizza.getPizzaID()))
 				.executeQuery();
 
 		if (!resultSet.next()) {
 			throw new ProductException();
 		}
+		deletePizza();
 	}
 }

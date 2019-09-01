@@ -28,17 +28,7 @@ public class GetPizzaInputBuyCommand implements Command {
 
 	@Override
 	public Command execute(Command parent) {
-		try {
-//			printOut.println("Please enter pizza name");
-//			printOut.println("Your input please: ");
-//			printOut.flush();
-//			String pizzaName = buffReader.readLine();
-//
-//			printOut.println("Please enter size");
-//			printOut.println("Your input please: ");
-//			printOut.flush();
-//			String size = buffReader.readLine();
-			
+		try {		
 			printOut.println("Please enter pizza id");
 			printOut.println("Your input please: ");
 			printOut.flush();

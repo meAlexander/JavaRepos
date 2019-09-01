@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import commands.Command;
-import commands.inputs.update.GetOrderInputUpdateCommand;
+import commands.inputs.updateOrderStatus.GetOrderInputUpdateCommand;
 import commands.menus.MainMenuCommand;
 import exceptions.InputOptionException;
 
@@ -24,12 +24,11 @@ public class LoggedInAdminMenuCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			printOut.println(
-					"Login admin menu: 1.Add product 2.Delete product 3.Update order status 4.Main menu");
+			printOut.println("Login admin menu: 1.Add product 2.Delete product 3.Update order status 4.Main menu");
 			printOut.println("Your input please: ");
 			printOut.flush();
-			String adminMenuAnswer = buffReader.readLine();
 
+			String adminMenuAnswer = buffReader.readLine();
 			return getNextCommand(adminMenuAnswer);
 		} catch (IOException e) {
 			e.printStackTrace();

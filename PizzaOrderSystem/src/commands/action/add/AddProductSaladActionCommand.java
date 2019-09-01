@@ -30,13 +30,15 @@ public class AddProductSaladActionCommand implements Command {
 			printOut.println("Salad added!");
 			printOut.flush();
 		} catch (SQLException e) {
-			if(e.getMessage().contains("Duplicate key")) {
-				printOut.println("Exists salad with this name!");
-			}else {
+			if (e.getMessage().contains("Duplicate key")) {
+				printOut.println("Salad exists with this name!");
+				printOut.flush();
+			} else {
 				e.printStackTrace();
 			}
 		} catch (AddProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}

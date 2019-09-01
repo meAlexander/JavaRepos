@@ -31,14 +31,17 @@ public class GetUserOrdersActionCommand implements Command {
 
 	public void getUserOrders() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement(String.format(
-				"SELECT id, itemName, count, username, orderStatus, dateOrder FROM orders WHERE username = '%s'",
+				"SELECT id, products, totalPrice, username, orderStatus, dateOrder FROM orders WHERE username = '%s'",
 				user.getUserName())).executeQuery();
 
 		while (resultSet.next()) {
 			printOut.println(String.format(
-					"Order id: %d, Item name: %s, Count: %d, Username: %s, Order status: %s, Date order: %s",
-					resultSet.getInt("id"), resultSet.getString("itemName"), resultSet.getInt("count"),
-					resultSet.getString("username"), resultSet.getString("orderStatus"),
+					"Order id: %d, Products: %s, Total Price: %.2f, Username: %s, Order status: %s, Date order: %s",
+					resultSet.getInt("id"),
+					resultSet.getString("products"),
+					resultSet.getDouble("totalPrice"),
+					resultSet.getString("username"),
+					resultSet.getString("orderStatus"),
 					resultSet.getTimestamp("dateOrder")));
 		}
 	}

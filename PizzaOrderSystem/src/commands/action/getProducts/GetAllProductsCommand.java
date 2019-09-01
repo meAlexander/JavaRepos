@@ -41,9 +41,12 @@ public class GetAllProductsCommand implements Command {
 	public List<String> getPizzas() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement("SELECT * FROM pizzas").executeQuery();
 		List<String> pizzasList = new ArrayList<>();
+		
 		while (resultSet.next()) {
 			String pizza = String.format("Pizza name: %s, Size: %s, Ingredients: %s, Price: %.2f",
-					resultSet.getString("pizza_name"), resultSet.getString("size"), resultSet.getString("ingredients"),
+					resultSet.getString("pizza_name"),
+					resultSet.getString("size"),
+					resultSet.getString("ingredients"),
 					resultSet.getDouble("price"));
 			pizzasList.add(pizza);
 		}
@@ -53,9 +56,11 @@ public class GetAllProductsCommand implements Command {
 	public List<String> getSalads() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement("SELECT * FROM salads").executeQuery();
 		List<String> saladsList = new ArrayList<>();
+		
 		while (resultSet.next()) {
 			String salad = String.format("Salad name: %s, Ingredients: %s, Price: %.2f",
-					resultSet.getString("salad_name"), resultSet.getString("ingredients"),
+					resultSet.getString("salad_name"),
+					resultSet.getString("ingredients"),
 					resultSet.getDouble("price"));
 			saladsList.add(salad);
 		}
@@ -65,9 +70,12 @@ public class GetAllProductsCommand implements Command {
 	public List<String> getDrinks() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement("SELECT * FROM drinks").executeQuery();
 		List<String> drinksList = new ArrayList<String>();
+		
 		while (resultSet.next()) {
 			String drinks = String.format("Drink type: %s, Brand: %s, Quantity: %d, Price: %.2f",
-					resultSet.getString("drink_type"), resultSet.getString("brand"), resultSet.getInt("quantity"),
+					resultSet.getString("drink_type"),
+					resultSet.getString("brand"),
+					resultSet.getInt("quantity"),
 					resultSet.getDouble("price"));
 			drinksList.add(drinks);
 		}

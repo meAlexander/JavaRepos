@@ -12,12 +12,12 @@ import commands.menus.LoginMenuCommand;
 import commands.menus.user.LoggedInUserMenuCommand;
 import exceptions.LoginException;
 
-public class LoginUserActionCommand implements Command{
+public class LoginUserActionCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	private User user;
-	
+
 	public LoginUserActionCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, User user) {
 		this.connection = connection;
 		this.printOut = printOut;
@@ -30,7 +30,7 @@ public class LoginUserActionCommand implements Command{
 		try {
 			if (checkUserInfo()) {
 				return new LoggedInUserMenuCommand(connection, printOut, buffReader, user);
-			}else {
+			} else {
 				throw new LoginException();
 			}
 		} catch (SQLException e) {
@@ -43,9 +43,9 @@ public class LoginUserActionCommand implements Command{
 	}
 
 	public boolean checkUserInfo() throws SQLException {
-		ResultSet resultSet = connection.prepareStatement(
-				String.format("SELECT username FROM users WHERE username COLLATE utf8mb4_0900_as_cs LIKE '%s' AND password LIKE '%s'", user.getUserName(), user.getPassword()))
-				.executeQuery();
+		ResultSet resultSet = connection.prepareStatement(String.format(
+				"SELECT username FROM users WHERE username COLLATE utf8mb4_0900_as_cs LIKE '%s' AND password LIKE '%s'",
+				user.getUserName(), user.getPassword())).executeQuery();
 
 		if (resultSet.next()) {
 			return true;

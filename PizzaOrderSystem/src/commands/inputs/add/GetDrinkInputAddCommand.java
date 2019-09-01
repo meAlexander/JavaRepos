@@ -36,7 +36,7 @@ public class GetDrinkInputAddCommand implements Command {
 			printOut.println("Please enter quantity");
 			printOut.println("Your input please: ");
 			printOut.flush();
-			int quantity = Integer.parseInt(buffReader.readLine());
+			String quantity = buffReader.readLine();
 
 			printOut.println("Please enter price");
 			printOut.println("Your input please: ");

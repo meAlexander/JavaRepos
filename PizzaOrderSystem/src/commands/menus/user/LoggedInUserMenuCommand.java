@@ -30,20 +30,21 @@ public class LoggedInUserMenuCommand implements Command {
 			printOut.println("Login user menu: 1.Buy products 2.View products 3.Main menu");
 			printOut.println("Your input please: ");
 			printOut.flush();
-			String userMenuAnswer = buffReader.readLine();
 
-			return getNextCommand(userMenuAnswer);
+			String loginUserAnswer = buffReader.readLine();
+			return getNextCommand(loginUserAnswer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InputOptionException e) {
+			printOut.println("Wrong option!");
 			printOut.flush();
 			return new LoggedInUserMenuCommand(connection, printOut, buffReader, user);
 		}
 		return null;
 	}
 
-	private Command getNextCommand(String userMenuAnswer) throws InputOptionException {
-		switch (userMenuAnswer) {
+	private Command getNextCommand(String loginUserAnswer) throws InputOptionException {
+		switch (loginUserAnswer) {
 		case "Buy products":
 		case "1":
 			return new BuyProductMenuCommand(connection, printOut, buffReader, user);

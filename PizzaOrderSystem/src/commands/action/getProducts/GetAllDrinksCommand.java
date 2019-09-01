@@ -13,13 +13,13 @@ import commands.Command;
 import commands.inputs.buy.GetDrinkInputBuyCommand;
 
 public class GetAllDrinksCommand implements Command {
-	private Connection connection;
+	private static Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
 	private User user;
 
 	public GetAllDrinksCommand(Connection connection, PrintStream printOut, BufferedReader buffReader, User user) {
-		this.connection = connection;
+		GetAllDrinksCommand.connection = connection;
 		this.printOut = printOut;
 		this.buffReader = buffReader;
 		this.user = user;
@@ -42,13 +42,17 @@ public class GetAllDrinksCommand implements Command {
 		return null;
 	}
 
-	public List<String> getDrinks() throws SQLException {
+	public static List<String> getDrinks() throws SQLException {
 		ResultSet resultSet = connection.prepareStatement("SELECT * FROM drinks").executeQuery();
 		List<String> drinksList = new ArrayList<String>();
+		
 		while (resultSet.next()) {
 			String drinks = String.format("Drink id: %d, Drink type: %s, Brand: %s, Quantity: %d, Price: %.2f",
-					resultSet.getInt("id"), resultSet.getString("drink_type"), resultSet.getString("brand"),
-					resultSet.getInt("quantity"), resultSet.getDouble("price"));
+					resultSet.getInt("id"),
+					resultSet.getString("drink_type"),
+					resultSet.getString("brand"),
+					resultSet.getInt("quantity"),
+					resultSet.getDouble("price"));
 			drinksList.add(drinks);
 		}
 		return drinksList;

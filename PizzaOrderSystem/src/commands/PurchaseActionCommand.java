@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import client.User;
+import exceptions.BasketException;
 import exceptions.OrderException;
 import items.Item;
 
@@ -28,29 +29,42 @@ public class PurchaseActionCommand implements Command {
 		try {
 			purchaseProducts();
 			printOut.println("Order is added!");
+			printOut.flush();
+			clearBasket();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (OrderException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
+		} catch (BasketException e) {
+			printOut.println(e.getMessage());
+			printOut.flush();
 		}
-		printOut.flush();
 		return nextCommand;
 	}
 
-	public void purchaseProducts() throws SQLException, OrderException {
+	private void clearBasket() {
+		user.getBasket().clear();
+	}
+
+	public void purchaseProducts() throws SQLException, OrderException, BasketException {
 		double totalPrice = 0;
 		for (Item product : user.getBasket()) {
 			String itemName = product.getName();
-			int count = product.getCount();
+			int count = product.getAmount();
 			double price = product.getPrice();
-			builder.append(String.format("%s - %d, price: %.2f;", itemName, count, price * count));
+			builder.append(String.format("%s, amount - %d;", itemName, count));
 			totalPrice += price * count;
+		}
+		
+		if(builder.length() == 0 || totalPrice == 0) {
+			throw new BasketException();
 		}
 		acceptOrder(totalPrice);
 	}
 
 	public void acceptOrder(double totalPrice) throws SQLException, OrderException {
-		String products = "Products: " + builder.deleteCharAt(builder.length() - 1) + ".";
+		String products = builder.deleteCharAt(builder.length() - 1) + ".";
 		PreparedStatement ps = connection
 				.prepareStatement("INSERT INTO orders(products, totalPrice, username) VALUES(?, ?, ?)");
 		ps.setString(1, products);

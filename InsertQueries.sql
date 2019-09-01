@@ -11,10 +11,10 @@ VALUES('Garden salad', 'Romaine, iceberg, red leaf lettuce, Roma tomatoes, cucum
 ('Santa Barbara cobb', 'Crisp iceberg & romaine lettuce, tomatoes, avocado, blue cheese, crisp bacon & egg', 5.50);
 
 INSERT INTO drinks(drink_type, brand, quantity, price)
-VALUES('Beer', 'Kamenitza', 500, 3),
-('Wine', 'Rose', 250, 4),
-('Water', 'Devin', 500, 3),
-('Alcohol-free', 'Coca-Cola', 1000, 2.50);
+VALUES('Beer', 'Kamenitza', '500', 3),
+('Wine', 'Rose', '500', 4),
+('Water', 'Devin', '500', 3),
+('Alcohol-free', 'Coca-Cola', '1000', 2.50);
 
 INSERT INTO users(username, password, phone, email)
 VALUES('alexander.98', 'userPassword@1', '0894089756', 'alexander.98@gmail.com'),

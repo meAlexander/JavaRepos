@@ -28,21 +28,20 @@ public class BasketMenuCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			printOut.flush();
 			printOut.println("Basket menu: 1.Purchase 2.Delete product from basket 3.Buy product menu");
 			printOut.println("Your input please: ");
 			printOut.flush();
-			String buyProductAnswer;
-			buyProductAnswer = buffReader.readLine();
-			return getNextCommand(buyProductAnswer);
+
+			String basketAnswer = buffReader.readLine();
+			return getNextCommand(basketAnswer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public Command getNextCommand(String buyProductAnswer) {
-		switch (buyProductAnswer) {
+	public Command getNextCommand(String basketAnswer) {
+		switch (basketAnswer) {
 		case "Purchase":
 		case "1":
 			return new PurchaseActionCommand(connection, printOut, user, nextCommand);

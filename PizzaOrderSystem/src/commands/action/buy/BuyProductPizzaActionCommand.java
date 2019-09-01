@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import client.User;
 import commands.Command;
 import exceptions.ProductException;
-import exceptions.PurchaseException;
 import items.PizzaItem;
 
 public class BuyProductPizzaActionCommand implements Command {
@@ -37,34 +36,23 @@ public class BuyProductPizzaActionCommand implements Command {
 			e.printStackTrace();
 		} catch (ProductException e) {
 			printOut.println(e.getMessage());
-		} catch (PurchaseException e) {
-			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}
 
 	public void addPizza(ResultSet resultSet) throws SQLException {
-//		PreparedStatement ps = connection
-//				.prepareStatement("INSERT INTO orders(itemName, count, username, dateOrder) VALUES(?, ?, ?, NOW())");
-//		ps.setString(1, pizza.getName());
-//		ps.setInt(2, pizza.getCount());
-//		ps.setString(3, user.getUserName());
-//
-//		if (ps.execute()) {
-//			throw new PurchaseException();
-//		}
-		
 		PizzaItem newPizza = new PizzaItem(resultSet.getString("pizza_name"), resultSet.getString("size"),
-				pizza.getCount(), resultSet.getDouble("price"));
+				pizza.getAmount(), resultSet.getDouble("price"));
 		user.getBasket().add(newPizza);
 	}
 
-	public void checkPizzaInfo() throws SQLException, ProductException, PurchaseException {
+	public void checkPizzaInfo() throws SQLException, ProductException {
 		ResultSet resultSet = connection
 				.prepareStatement(
 						String.format("SELECT pizza_name, size, price FROM pizzas WHERE id = %d", pizza.getPizzaID()))
 				.executeQuery();
-		
+
 		if (!resultSet.next()) {
 			throw new ProductException();
 		}

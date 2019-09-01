@@ -21,7 +21,7 @@ CREATE TABLE drinks(
 id INT(11) PRIMARY KEY AUTO_INCREMENT,
 drink_type VARCHAR(25),
 brand VARCHAR(25),
-quantity INT(11) NOT NULL,
+quantity ENUM('500', '1000', '1500') NOT NULL,
 price DOUBLE(5, 2) NOT NULL
 );
 
@@ -48,5 +48,6 @@ id INT(11) PRIMARY KEY AUTO_INCREMENT,
 products VARCHAR(1000) NOT NULL,
 totalPrice DOUBLE(5, 2) NOT NULL,
 username VARCHAR(50) NOT NULL,
-orderStatus ENUM('Waiting', 'Accepted', 'Delivery') DEFAULT 'Waiting'
+orderStatus ENUM('Waiting', 'Accepted', 'Delivery') DEFAULT 'Waiting',
+dateOrder DATETIME DEFAULT NOW()
 );

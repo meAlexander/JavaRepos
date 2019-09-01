@@ -44,7 +44,7 @@ public class GetAdminInputRegistrationCommand implements Command {
 			String email = buffReader.readLine();
 
 			User user = new User(adminName, password, phone, email);
-			return new RegistrationAdminActionCommand(connection, printOut, buffReader, user, parent);
+			return new RegistrationAdminActionCommand(connection, printOut, user, parent);
 		} catch (IOException e) {
 			printOut.println("Error input");
 		}

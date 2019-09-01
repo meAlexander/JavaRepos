@@ -9,7 +9,7 @@ import commands.Command;
 import commands.action.delete.DeleteProductPizzaActionCommand;
 import items.PizzaItem;
 
-public class GetPizzaInputDeleteCommand implements Command{
+public class GetPizzaInputDeleteCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
@@ -19,25 +19,15 @@ public class GetPizzaInputDeleteCommand implements Command{
 		this.printOut = printOut;
 		this.buffReader = buffReader;
 	}
-	
+
 	@Override
 	public Command execute(Command parent) {
 		try {
-//			printOut.println("Please enter pizza name");
-//			printOut.println("Your input please: ");
-//			printOut.flush();
-//			String pizzaName = buffReader.readLine();
-//			
-//			printOut.println("Please enter size");
-//			printOut.println("Your input please: ");
-//			printOut.flush();
-//			String size = buffReader.readLine();
-			
 			printOut.println("Please enter pizza id");
 			printOut.println("Your input please: ");
 			printOut.flush();
 			int pizzaID = Integer.parseInt(buffReader.readLine());
-			
+
 			PizzaItem pizza = new PizzaItem(pizzaID);
 			return new DeleteProductPizzaActionCommand(connection, printOut, pizza, parent);
 		} catch (IOException e) {

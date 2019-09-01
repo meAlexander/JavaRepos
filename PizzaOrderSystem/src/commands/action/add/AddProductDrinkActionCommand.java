@@ -30,13 +30,15 @@ public class AddProductDrinkActionCommand implements Command {
 			printOut.println("Drink added!");
 			printOut.flush();
 		} catch (SQLException e) {
-			if(!(drink.getQuantity() == 500) || !(drink.getQuantity() == 1000) || !(drink.getQuantity() == 1500)) {
+			if (!(drink.getQuantity().equals("500")) || !(drink.getQuantity().equals("1000")) || !(drink.getQuantity().equals("1500"))) {
 				printOut.println("Drink quantity must be '500', '1000', '1500'");
-			}else {
+				printOut.flush();
+			} else {
 				e.printStackTrace();
 			}
 		} catch (AddProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}
@@ -46,7 +48,7 @@ public class AddProductDrinkActionCommand implements Command {
 				.prepareStatement("INSERT INTO drinks(drink_type, brand, quantity, price) VALUES(?, ?, ?, ?)");
 		ps.setString(1, drink.getName());
 		ps.setString(2, drink.getBrand());
-		ps.setInt(3, drink.getQuantity());
+		ps.setString(3, drink.getQuantity());
 		ps.setDouble(4, drink.getPrice());
 
 		if (ps.execute()) {

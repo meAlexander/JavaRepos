@@ -32,11 +32,13 @@ public class AddProductPizzaActionCommand implements Command {
 		} catch (SQLException e) {
 			if (!pizza.getSize().equals("S") || !pizza.getSize().equals("M") || !pizza.getSize().equals("L")) {
 				printOut.println("Size must be 'S', 'M' or 'L'");
-			}else {
+				printOut.flush();
+			} else {
 				e.printStackTrace();
 			}
 		} catch (AddProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}

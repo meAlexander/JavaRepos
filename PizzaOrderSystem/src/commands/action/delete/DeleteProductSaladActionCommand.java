@@ -1,6 +1,5 @@
 package commands.action.delete;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,39 +28,38 @@ public class DeleteProductSaladActionCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			deleteSalad();
+			checkSaladInfo();
 			printOut.println("Salad deleted!");
 			printOut.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DeleteProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		} catch (ProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}
 
-	public void deleteSalad() throws SQLException, IOException, DeleteProductException, ProductException {
-		checkSaladInfo();
-
-		PreparedStatement ps = connection.prepareStatement("DELETE FROM salads WHERE salad_name = ?");
-		ps.setString(1, salad.getName());
+	public void deleteSalad() throws SQLException, DeleteProductException {
+		PreparedStatement ps = connection.prepareStatement("DELETE FROM salads WHERE id = ?");
+		ps.setInt(1, salad.getSaladID());
 
 		if (ps.execute()) {
 			throw new DeleteProductException();
 		}
 	}
 
-	public void checkSaladInfo() throws SQLException, ProductException {
+	public void checkSaladInfo() throws SQLException, ProductException, DeleteProductException {
 		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id FROM drinks WHERE salad_name = '%s'", salad.getName()))
+				.prepareStatement(String.format("SELECT id FROM salads WHERE id = %d", salad.getSaladID()))
 				.executeQuery();
 
 		if (!resultSet.next()) {
 			throw new ProductException();
 		}
+		deleteSalad();
 	}
 }

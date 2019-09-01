@@ -45,7 +45,7 @@ public class GetUserInputRegistrationCommand implements Command {
 			String email = buffReader.readLine();
 
 			User user = new User(username, password, phone, email);
-			return new RegistrationUserActionCommand(connection, printOut, buffReader, user, parent);
+			return new RegistrationUserActionCommand(connection, printOut, user, parent);
 		} catch (IOException e) {
 			printOut.println("Error input");		}
 		return null;

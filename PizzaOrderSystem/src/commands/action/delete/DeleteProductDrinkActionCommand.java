@@ -28,41 +28,38 @@ public class DeleteProductDrinkActionCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			deleteDrink();
+			checkDrinkInfo();
 			printOut.println("Drink deleted!");
 			printOut.flush();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DeleteProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		} catch (ProductException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}
 
-	public void deleteDrink() throws SQLException, DeleteProductException, ProductException {
-		checkDrinkInfo();
-
-		PreparedStatement ps = connection
-				.prepareStatement("DELETE FROM drinks WHERE drink_type = ? AND brand = ? AND quantity = %d");
-		ps.setString(1, drink.getName());
-		ps.setString(2, drink.getBrand());
-		ps.setInt(3, drink.getQuantity());
+	public void deleteDrink() throws SQLException, DeleteProductException {
+		PreparedStatement ps = connection.prepareStatement("DELETE FROM drinks WHERE id = ?");
+		ps.setInt(1, drink.getDrinkID());
 
 		if (ps.execute()) {
 			throw new DeleteProductException();
 		}
 	}
 
-	public void checkDrinkInfo() throws SQLException, ProductException {
-		ResultSet resultSet = connection.prepareStatement(
-				String.format("SELECT id FROM drinks WHERE drink_type = '%s' AND brand = '%s' AND quantity = %d",
-						drink.getName(), drink.getBrand(), drink.getQuantity()))
+	public void checkDrinkInfo() throws SQLException, ProductException, DeleteProductException {
+		ResultSet resultSet = connection
+				.prepareStatement(String.format("SELECT id FROM drinks WHERE id = %d", drink.getDrinkID()))
 				.executeQuery();
 
 		if (!resultSet.next()) {
 			throw new ProductException();
 		}
+		deleteDrink();
 	}
 }

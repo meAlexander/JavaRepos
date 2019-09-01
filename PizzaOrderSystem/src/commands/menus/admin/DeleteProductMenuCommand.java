@@ -16,7 +16,7 @@ public class DeleteProductMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
-	
+
 	public DeleteProductMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader) {
 		this.connection = connection;
 		this.printOut = printOut;
@@ -29,12 +29,12 @@ public class DeleteProductMenuCommand implements Command {
 			printOut.println("Delete product menu: 1.Pizza 2.Salad 3.Drink 4.Admin menu 5.Main menu");
 			printOut.println("Your input please: ");
 			printOut.flush();
+
 			String deleteProductAnswer = buffReader.readLine();
-			
 			return getNextCommand(deleteProductAnswer);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}catch (InputOptionException e) {
+		} catch (InputOptionException e) {
 			printOut.flush();
 			return new DeleteProductMenuCommand(connection, printOut, buffReader);
 		}

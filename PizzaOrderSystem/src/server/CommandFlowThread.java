@@ -34,6 +34,7 @@ public class CommandFlowThread extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		Command previousCommand = null;
 		while(command != null) {
 			Command newCommand = command.execute(previousCommand);

@@ -16,7 +16,7 @@ public class AddProductMenuCommand implements Command {
 	private Connection connection;
 	private PrintStream printOut;
 	private BufferedReader buffReader;
-	
+
 	public AddProductMenuCommand(Connection connection, PrintStream printOut, BufferedReader buffReader) {
 		this.connection = connection;
 		this.printOut = printOut;
@@ -29,20 +29,20 @@ public class AddProductMenuCommand implements Command {
 			printOut.println("Add product menu: 1.Pizza 2.Salad 3.Drink 4.Admin menu 5.Main menu");
 			printOut.println("Your input please: ");
 			printOut.flush();
-			String buyProductAnswer = buffReader.readLine();
-			
-			return getNextCommand(buyProductAnswer);
+
+			String addProductAnswer = buffReader.readLine();
+			return getNextCommand(addProductAnswer);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}catch (InputOptionException e) {
+		} catch (InputOptionException e) {
 			printOut.flush();
 			return new AddProductMenuCommand(connection, printOut, buffReader);
 		}
 		return null;
 	}
 
-	private Command getNextCommand(String buyProductAnswer) throws InputOptionException {
-		switch (buyProductAnswer) {
+	private Command getNextCommand(String addProductAnswer) throws InputOptionException {
+		switch (addProductAnswer) {
 		case "Pizza":
 		case "1":
 			return new GetPizzaInputAddCommand(connection, printOut, buffReader);
@@ -61,5 +61,5 @@ public class AddProductMenuCommand implements Command {
 		default:
 			throw new InputOptionException();
 		}
-	}	
+	}
 }

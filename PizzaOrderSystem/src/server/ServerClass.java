@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerClass {
-
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
 		ServerSocket server = new ServerSocket(1211);

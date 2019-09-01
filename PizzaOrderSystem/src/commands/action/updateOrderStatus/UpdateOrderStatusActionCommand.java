@@ -1,4 +1,4 @@
-package commands.action.update;
+package commands.action.updateOrderStatus;
 
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -29,24 +29,25 @@ public class UpdateOrderStatusActionCommand implements Command {
 	@Override
 	public Command execute(Command parent) {
 		try {
-			updateStatus();
-			printOut.println("Updated order status!");
+			checkOrder();
+			printOut.println("Order status updated!");
 			printOut.flush();
 		} catch (SQLException e) {
-			if (!status.equals("Waiting") || !status.equals("Cooking") || !status.equals("Delivery")) {
-				printOut.println("Status must be 'Waiting', 'Cooking' or 'Delivery'");
+			if (!(status.equals("Waiting")) || !(status.equals("Accepted")) || !(status.equals("Delivery"))) {
+				printOut.println("Order status must be 'Waiting', 'Accepted' or 'Delivery'");
+				printOut.flush();
 			}
 		} catch (OrderException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		} catch (OrderStatusException e) {
 			printOut.println(e.getMessage());
+			printOut.flush();
 		}
 		return nextCommand;
 	}
 
-	public void updateStatus() throws SQLException, OrderException, OrderStatusException {
-		checkOrder();
-		
+	public void updateStatus() throws SQLException, OrderStatusException {
 		PreparedStatement ps = connection.prepareStatement("UPDATE orders SET orderStatus = ? WHERE id = ?");
 		ps.setString(1, status);
 		ps.setInt(2, id);
@@ -55,14 +56,14 @@ public class UpdateOrderStatusActionCommand implements Command {
 			throw new OrderStatusException();
 		}
 	}
-	
-	public void checkOrder() throws SQLException, OrderException {
-		ResultSet resultSet = connection
-				.prepareStatement(String.format("SELECT id FROM orders WHERE id = %d", id))
+
+	public void checkOrder() throws SQLException, OrderException, OrderStatusException {
+		ResultSet resultSet = connection.prepareStatement(String.format("SELECT id FROM orders WHERE id = %d", id))
 				.executeQuery();
-		
-		if(!resultSet.next()) {
+
+		if (!resultSet.next()) {
 			throw new OrderException();
 		}
+		updateStatus();
 	}
 }

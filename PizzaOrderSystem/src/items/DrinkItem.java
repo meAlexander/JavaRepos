@@ -3,36 +3,36 @@ package items;
 public class DrinkItem extends Item {
 	private int drinkID;
 	private String brand;
-	private int quantity;
+	private String quantity;
 
-	public DrinkItem(int drinkID, String name, int count, String brand, double price, int quantity) {
-		super(name, count, price);
+	public DrinkItem(int drinkID, String name, int amount, String brand, double price, String quantity) {
+		super(name, amount, price);
 		this.drinkID = drinkID;
 		this.brand = brand;
 		this.quantity = quantity;
 	}
 
-	public DrinkItem(String name, String brand, double price, int quantity) {
+	public DrinkItem(String name, String brand, double price, String quantity) {
 		this(0, name, 0, brand, price, quantity);
 	}
 
-	public DrinkItem(int drinkID, int count) {
-		this(drinkID, "NULL", count, "NULL", 0, 0);
+	public DrinkItem(int drinkID, int amount) {
+		this(drinkID, "NULL", amount, "NULL", 0, "NULL");
 	}
 
-	public DrinkItem(String name, String brand, int quantity, int count, double price) {
-		this(0, name, count, brand, price, quantity);
+	public DrinkItem(String name, String brand, String quantity, int amount, double price) {
+		this(0, name, amount, brand, price, quantity);
 	}
 
 	public DrinkItem(int drinkID) {
-		this(drinkID, "NULL", 0, "NULL", 0, 0);
+		this(drinkID, "NULL", 0, "NULL", 0, "NULL");
 	}
 
 	public String getBrand() {
 		return brand;
 	}
 
-	public int getQuantity() {
+	public String getQuantity() {
 		return quantity;
 	}
 
@@ -41,8 +41,7 @@ public class DrinkItem extends Item {
 	}
 
 	public String toString() {
-
-		return String.format("Drink: %s, Brand: %s, Quantity: %d, Count: %d", this.getName(), this.brand, this.quantity,
-				this.getCount());
+		return String.format("Drink: %s, Brand: %s, Quantity: %s, Amount: %d", this.getName(), this.getBrand(),
+				this.getAmount(), this.getAmount());
 	}
 }
