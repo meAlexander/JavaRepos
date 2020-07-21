@@ -5,8 +5,8 @@ use pizza_order;
 CREATE TABLE pizzas(
 id INT(11) PRIMARY KEY AUTO_INCREMENT,
 pizza_name VARCHAR(50) NOT NULL,
-size ENUM('S', 'M', 'L') NOT NULL,
 ingredients VARCHAR(500) NOT NULL,
+size ENUM('S', 'M', 'L') NOT NULL,
 price DOUBLE(5, 2) NOT NULL
 );
 

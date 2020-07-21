@@ -1,9 +1,9 @@
-INSERT INTO pizzas(pizza_name, size, ingredients, price)
+INSERT INTO pizzas(pizza_name, ingredients, size, price)
 VALUES
-('BBQ chicken', 'S', 'BBQ SAUCE, MOZZARELLA, CHICKEN BREAST, RED ONION, PEPPERS', 8.40),
-('BBQ chicken', 'M', 'BBQ SAUCE, MOZZARELLA, CHICKEN BREAST, RED ONION, PEPPERS', 11.12),
-('Meatball', 'S', 'MOZZARELLA, RICOTTA, MEATBALLS, PEPPERS, RED ONION, MICRO BASIL', 10.10),
-('Meatball', 'M', 'MOZZARELLA, RICOTTA, MEATBALLS, PEPPERS, RED ONION, MICRO BASIL', 12.10);
+('BBQ chicken', 'BBQ SAUCE, MOZZARELLA, CHICKEN BREAST, RED ONION, PEPPERS', 'S', 8.40),
+('BBQ chicken', 'BBQ SAUCE, MOZZARELLA, CHICKEN BREAST, RED ONION, PEPPERS', 'M', 11.12),
+('Meatball', 'MOZZARELLA, RICOTTA, MEATBALLS, PEPPERS, RED ONION, MICRO BASIL', 'S', 10.10),
+('Meatball', 'MOZZARELLA, RICOTTA, MEATBALLS, PEPPERS, RED ONION, MICRO BASIL', 'M', 12.10);
 
 INSERT INTO salads(salad_name, ingredients, price)
 VALUES('Garden salad', 'Romaine, iceberg, red leaf lettuce, Roma tomatoes, cucumbers, red onions, carrots & croutons', 6.50),

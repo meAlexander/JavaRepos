@@ -1,0 +1,56 @@
+Registration
+User
+petarPetrov
+userPassword@3
+0898476824
+petar.Petrov@gmail.com
+--------
+Registration
+Admin
+petarIvanov
+adminPassword@3
+0898247568
+petar.Ivanov@gmail.com
+--------
+Login
+Admin
+petarIvanov
+adminPassword@3
+Add product
+Pizza
+piperoni
+shunka, kashkaval
+S
+5.20
+-------
+Login
+User
+petarPetrov
+userPassword@3
+Buy products
+Pizza
+5
+2
+------
+Login
+User
+petarPetrov
+userPassword@3
+Buy products
+My orders
+-----
+Login
+Admin
+petarIvanov
+adminPassword@3
+Update order status
+1
+Accepted
+------
+Login
+Admin
+petarIvanov
+adminPassword@3
+Delete product
+Pizza
+5
